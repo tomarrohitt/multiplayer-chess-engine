@@ -10,15 +10,15 @@ export interface RouteConfig {
 
 export const routeConfigs: RouteConfig[] = [
   {
+    path: "/api/ws/ticket",
+    rules: [{ method: "ALL", protected: true }],
+  },
+  {
     path: "/api/auth",
     rules: [{ method: "ALL", protected: false }],
   },
   {
     path: "/api/user",
-    rules: [{ method: "ALL", protected: true }],
-  },
-  {
-    path: "/api/ws/ticket",
     rules: [{ method: "ALL", protected: true }],
   },
   {

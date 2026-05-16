@@ -66,6 +66,8 @@ app.use("/api/friends", friendRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/user", userRouter);
 
+registerWsTicketRoute(app);
+
 app.all("/api/{*any}", (req, res) => {
   res.status(404).json({
     error: "Not Found",
@@ -77,7 +79,6 @@ app.all("{*any}", (req, res) => {
   res.status(404).json({ error: "Endpoint not Found" });
 });
 
-registerWsTicketRoute(app);
 const server = http.createServer(app);
 
 initializeWebSocketServer(server);
