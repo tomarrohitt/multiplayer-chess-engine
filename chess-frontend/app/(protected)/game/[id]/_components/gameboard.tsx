@@ -26,11 +26,12 @@ export function Gameboard({ gameId, user }: GameboardProps) {
   useEffect(() => {
     spectateGame(gameId);
     return () => leaveSpectator(gameId);
-  }, [gameId]);
+  }, [gameId, spectateGame, leaveSpectator]);
 
   const activeGame = useGameStore((s) => s.activeGame);
   const gameOver = useGameStore((s) => s.gameOver);
   const rematchOffer = useGameStore((s) => s.rematchOffer);
+  const drawOffer = useGameStore((s) => s.drawOffer);
 
   const timeline = useTimeline(activeGame?.pgn);
   const viewingIndex = useGameUIStore((s) => s.viewingIndex);
@@ -56,6 +57,9 @@ export function Gameboard({ gameId, user }: GameboardProps) {
     userId: user.id,
     isArchive: false,
     rematchOffer,
+    gameId: activeGame?.gameId,
+    gameOver,
+    drawOffer,
   });
 
   const capturedPieces = useCapturedPieces(currentFen);

@@ -32,8 +32,6 @@ export default async function CommunityPage({
       break;
   }
 
-  console.log({ counts });
-
   return (
     <div
       className="min-h-screen w-full"

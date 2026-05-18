@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useMemo, useState } from "react";
 import { User } from "@/types/auth";
-import { GameStatus, PlayerColor } from "@/types/chess";
+import { PlayerColor } from "@/types/chess";
 import { PlayerArea } from "./player-area";
 import { MoveList } from "./move-list";
 import { getPlayerAdvantages } from "./advantage";
@@ -18,6 +18,7 @@ import Chessground from "@bezalel6/react-chessground";
 import type { Config } from "chessground/config";
 import { sharedBoardConfig } from "./board-theme";
 import Image from "next/image";
+import { InitialGameData } from "../page";
 
 export interface GamePlayer {
   id: string;
@@ -28,22 +29,6 @@ export interface GamePlayer {
   diff: number;
   timeLeftMs: number;
   capturedPieces: string[];
-}
-
-export interface InitialGameData {
-  id: string;
-  status: GameStatus;
-  result: string;
-  winnerId: string | null;
-  timeControl: string;
-  createdAt: string;
-  pgn: string;
-  finalFen: string;
-  moveTimes: number[];
-  whiteTimeLeftMs: number;
-  blackTimeLeftMs: number;
-  white: GamePlayer;
-  black: GamePlayer;
 }
 
 interface ArchiveBoardProps {

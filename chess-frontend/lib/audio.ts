@@ -1,6 +1,10 @@
 export const playAudio = (soundFile: string) => {
   const audio = new Audio(soundFile);
-  audio.play().catch((e) => console.log("Audio play blocked by browser:", e));
+  audio.play().catch((e) => {
+    if (e.name !== "NotAllowedError") {
+      console.error("Audio play error:", e);
+    }
+  });
 };
 
 export const getMoveSoundFile = (

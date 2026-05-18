@@ -26,9 +26,7 @@ export const GameChat = memo(function GameChat({
     }
   }, [chatMessages]);
 
-  useEffect(() => {
-    joinGameChat(gameId);
-  }, [gameId]);
+  joinGameChat(gameId);
 
   const handleSubmit = useCallback(
     (e: React.SubmitEvent<HTMLFormElement>) => {

@@ -14,10 +14,6 @@ export function InfiniteScrollList({
   const observerTarget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setVisibleCount(chunkSize);
-  }, [items.length, chunkSize]);
-
-  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {

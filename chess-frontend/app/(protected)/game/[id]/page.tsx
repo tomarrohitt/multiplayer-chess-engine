@@ -1,8 +1,25 @@
 import { getUserFromSession } from "@/actions/session";
 import { redirect } from "next/navigation";
 import { Gameboard } from "./_components/gameboard";
-import { api } from "@/lib/clients/server";
-import { ArchiveBoard } from "./_components/archive-board";
+import { ArchiveBoard, GamePlayer } from "./_components/archive-board";
+import { GameStatus } from "@/types/chess";
+import { safeFetch } from "@/lib/constants/safe-fetch";
+
+export interface InitialGameData {
+  id: string;
+  status: GameStatus;
+  result: string;
+  winnerId: string | null;
+  timeControl: string;
+  createdAt: string;
+  pgn: string;
+  finalFen: string;
+  moveTimes: number[];
+  whiteTimeLeftMs: number;
+  blackTimeLeftMs: number;
+  white: GamePlayer;
+  black: GamePlayer;
+}
 
 export default async function GamePage({
   params,
@@ -14,13 +31,7 @@ export default async function GamePage({
 
   const { id } = await params;
 
-  let initialGameData = null;
-
-  const res = await api(`/games/${id}`);
-  const json = await res.json();
-  if (json.success) {
-    initialGameData = json.data;
-  }
+  const initialGameData = await safeFetch<InitialGameData>(`/games/${id}`);
 
   if (initialGameData) {
     return <ArchiveBoard gameData={initialGameData} user={user} />;

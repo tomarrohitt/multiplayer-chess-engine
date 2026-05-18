@@ -116,9 +116,6 @@ async function recoverDeadLetters() {
     await saveMessagesBatch(msgsToInsert);
 
     await redis.ltrim("chat:dead_letters", rawMsgs.length, -1);
-    console.log(
-      `[Chat Worker] Successfully recovered ${rawMsgs.length} messages from DLQ.`,
-    );
   } catch (err) {
     console.error(`[Chat Worker] Failed to recover messages from DLQ:`, err);
   }

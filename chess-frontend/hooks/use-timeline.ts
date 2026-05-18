@@ -31,7 +31,7 @@ export function useTimeline(pgn?: string | null, timeControl?: string) {
     let isMounted = true;
 
     chessWorker.getTimelineCache(normalizedPgn, timeControl).then((result) => {
-      if (isMounted) setCache(result as TimelineCache);
+      if (isMounted) setCache(result);
     });
 
     return () => {

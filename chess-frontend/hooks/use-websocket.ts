@@ -41,7 +41,6 @@ export function useServerHealth(onBackendReady: () => void) {
         isFirstEvent.current = false;
         return;
       }
-      console.log("[SSE] Backend is back up. Triggering WS reconnect...");
       onBackendReadyRef.current();
     });
 
@@ -134,7 +133,6 @@ export function useWebSocket(user: User) {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(rawMessage);
     } else {
-      console.warn(`[WS] Socket not OPEN. Queuing message: ${type}`);
       if (messageQueue.current.length < MAX_QUEUE_SIZE) {
         messageQueue.current.push(rawMessage);
       } else {
@@ -224,6 +222,7 @@ export function useWebSocket(user: User) {
             wsRef.current?.send(
               JSON.stringify({ type: WsMessageType.SYNC_GAME }),
             );
+
             while (messageQueue.current.length > 0) {
               const msg = messageQueue.current[0];
               try {
@@ -340,18 +339,6 @@ export function useWebSocket(user: User) {
               payload: { ticket },
             }),
           );
-          ws.send(JSON.stringify({ type: WsMessageType.SYNC_GAME }));
-
-          while (messageQueue.current.length > 0) {
-            const msg = messageQueue.current[0];
-            try {
-              ws.send(msg);
-              messageQueue.current.shift();
-            } catch (err) {
-              console.error("[WS] Failed to drain queued message:", err);
-              break;
-            }
-          }
         };
 
         ws.onmessage = handleMessage;

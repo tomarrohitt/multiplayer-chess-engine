@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export function SearchUsersForm({
   placeholder,
@@ -16,10 +16,6 @@ export function SearchUsersForm({
   const searchParams = useSearchParams();
 
   const [text, setText] = useState(query);
-
-  useEffect(() => {
-    setText(query);
-  }, [query]);
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
