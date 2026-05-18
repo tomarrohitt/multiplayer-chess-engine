@@ -1,9 +1,9 @@
-import { LoginInput, LoginResponse, RegisterInput, User } from "@/types/auth";
+import { LoginInput, RegisterInput } from "@/types/auth";
 import { cookies } from "next/headers";
-import { baseApi } from "../clients/baseApi";
 import { api } from "../clients/server";
+import { baseApi } from "../clients/baseApi";
 
-export async function signIn(data: LoginInput): Promise<User> {
+export async function signIn(data: LoginInput) {
   const res = await baseApi("/auth/sign-in/email", {
     method: "POST",
     body: data,
@@ -39,12 +39,9 @@ export async function signIn(data: LoginInput): Promise<User> {
       });
     }
   });
-
-  const json = (await res.json()) as LoginResponse;
-  return json.user;
 }
 
-export async function signUp(data: RegisterInput): Promise<User> {
+export async function signUp(data: RegisterInput) {
   const res = await baseApi("/auth/sign-up/email", {
     method: "POST",
     body: data,
@@ -80,9 +77,6 @@ export async function signUp(data: RegisterInput): Promise<User> {
       });
     }
   });
-
-  const json = (await res.json()) as LoginResponse;
-  return json.user;
 }
 export async function signOut() {
   const res = await api("/auth/sign-out", {

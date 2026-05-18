@@ -14,6 +14,10 @@ export const routeConfigs: RouteConfig[] = [
     rules: [{ method: "ALL", protected: true }],
   },
   {
+    path: "/api/health/stream",
+    rules: [{ method: "ALL", protected: true }],
+  },
+  {
     path: "/api/auth",
     rules: [{ method: "ALL", protected: false }],
   },

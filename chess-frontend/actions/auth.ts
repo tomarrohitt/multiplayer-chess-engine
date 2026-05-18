@@ -45,8 +45,8 @@ export async function login(
   try {
     await signIn(result.data);
   } catch (error) {
+    console.log({ error });
     if (error instanceof Error) {
-      console.log(error instanceof Error, { error });
       return {
         success: false,
         message: error.message,

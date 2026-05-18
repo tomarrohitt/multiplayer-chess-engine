@@ -96,7 +96,11 @@ function WinRate({
   );
 }
 
-const LeaderBoardPage = async ({ searchParams }: { searchParams?: any }) => {
+const LeaderBoardPage = async ({
+  searchParams,
+}: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
   const params = await Promise.resolve(searchParams);
   const activeTab = (params?.tab as keyof LeaderboardsResponse) || "live_blitz";
 

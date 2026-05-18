@@ -10,14 +10,55 @@ import {
 
 const WS_URL =
   process.env.NEXT_PUBLIC_WS_URL ?? "wss://risenetup-chess-monolith.hf.space";
-const MAX_RECONNECT_ATTEMPTS = 10;
 const MAX_QUEUE_SIZE = 50;
 const HEARTBEAT_INTERVAL = 5000;
 const HEARTBEAT_TIMEOUT = 3000;
+const MAX_BACKOFF_ATTEMPTS = 10;
+
+const isDev = process.env.NODE_ENV === "development";
+
+const API_URL = isDev
+  ? `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/api`
+  : "/api";
+
+export function useServerHealth(onBackendReady: () => void) {
+  const esRef = useRef<EventSource | null>(null);
+  const isFirstEvent = useRef(true);
+  const onBackendReadyRef = useRef(onBackendReady);
+
+  useEffect(() => {
+    onBackendReadyRef.current = onBackendReady;
+  }, [onBackendReady]);
+
+  useEffect(() => {
+    const es = new EventSource(`${API_URL}/health/stream`, {
+      withCredentials: true,
+    });
+    esRef.current = es;
+
+    es.addEventListener("ready", () => {
+      if (isFirstEvent.current) {
+        isFirstEvent.current = false;
+        return;
+      }
+      console.log("[SSE] Backend is back up. Triggering WS reconnect...");
+      onBackendReadyRef.current();
+    });
+
+    es.onerror = () => {
+      console.warn("[SSE] Health stream error — browser will retry...");
+    };
+
+    return () => {
+      es.close();
+      esRef.current = null;
+    };
+  }, []);
+}
 
 async function getWsTicket(): Promise<string | null> {
   try {
-    const res = await fetch("/api/ws/ticket", {
+    const res = await fetch(`${API_URL}/ws/ticket`, {
       credentials: "include",
     });
     if (!res.ok) {
@@ -25,8 +66,6 @@ async function getWsTicket(): Promise<string | null> {
       return null;
     }
     const data = await res.json();
-
-    console.log({ data });
     return data.ticket ?? null;
   } catch (err) {
     console.error("[WS] Failed to fetch ticket:", err);
@@ -43,6 +82,7 @@ export function useWebSocket(user: User) {
   const reconnectTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const heartbeatInterval = useRef<ReturnType<typeof setInterval> | null>(null);
   const heartbeatTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const connectRef = useRef<() => void>(() => {});
 
   const action = useGameStore.getState().actions;
   const activeGame = useGameStore((s) => s.activeGame);
@@ -55,6 +95,8 @@ export function useWebSocket(user: User) {
   const clearHeartbeat = useCallback(() => {
     if (heartbeatInterval.current) clearInterval(heartbeatInterval.current);
     if (heartbeatTimeout.current) clearTimeout(heartbeatTimeout.current);
+    heartbeatInterval.current = null;
+    heartbeatTimeout.current = null;
   }, []);
 
   const startHeartbeat = useCallback(
@@ -179,6 +221,19 @@ export function useWebSocket(user: User) {
             break;
           case WsMessageType.AUTH_SUCCESS:
             console.log("[WS] Authenticated successfully.");
+            wsRef.current?.send(
+              JSON.stringify({ type: WsMessageType.SYNC_GAME }),
+            );
+            while (messageQueue.current.length > 0) {
+              const msg = messageQueue.current[0];
+              try {
+                wsRef.current?.send(msg);
+                messageQueue.current.shift();
+              } catch (err) {
+                console.error("[WS] Failed to drain queued message:", err);
+                break;
+              }
+            }
             break;
           case WsMessageType.ERROR:
             console.error("[WS] Server error:", msg.payload);
@@ -197,6 +252,33 @@ export function useWebSocket(user: User) {
     },
     [action],
   );
+
+  const scheduleReconnect = useCallback(() => {
+    if (isIntentionalClose.current) return;
+
+    const baseDelay = 1000;
+    const maxDelay = 30000;
+    const exponentialDelay = Math.min(
+      baseDelay * Math.pow(2, reconnectAttempts.current),
+      maxDelay,
+    );
+    const jitter = exponentialDelay * 0.2 * Math.random();
+    const finalDelay = Math.floor(exponentialDelay + jitter);
+
+    if (reconnectAttempts.current < MAX_BACKOFF_ATTEMPTS) {
+      reconnectAttempts.current++;
+    }
+
+    console.warn(
+      `[WS] Reconnecting in ${finalDelay}ms (attempt ${reconnectAttempts.current})`,
+    );
+
+    action.setConnection(WsConnectionStatus.DISCONNECTED);
+    reconnectTimeout.current = setTimeout(
+      () => connectRef.current(),
+      finalDelay,
+    );
+  }, []);
 
   const connect = useCallback(
     function connectWebSocket() {
@@ -218,15 +300,13 @@ export function useWebSocket(user: User) {
       action.setConnection(WsConnectionStatus.CONNECTING);
       action.setUser(userRef.current);
 
-      // Step 1: fetch ticket through Vercel proxy (same origin, cookies work)
       getWsTicket().then((ticket) => {
         if (!ticket) {
-          console.error("[WS] Could not obtain ticket. Aborting.");
-          action.setConnection(WsConnectionStatus.FAILED);
+          console.error("[WS] Could not obtain ticket. Scheduling retry...");
+          scheduleReconnect();
           return;
         }
 
-        // Step 2: open WebSocket directly to HuggingFace
         const ws = new WebSocket(WS_URL);
         wsRef.current = ws;
 
@@ -252,19 +332,14 @@ export function useWebSocket(user: User) {
           startHeartbeat(ws);
           reconnectAttempts.current = 0;
 
-          // Step 3: first message is always AUTH with the ticket
           ws.send(
             JSON.stringify({
               type: WsMessageType.AUTH,
               payload: { ticket },
             }),
           );
-
-          // Step 4: immediately follow with SYNC_GAME
-          // backend queues this until AUTH_SUCCESS is processed
           ws.send(JSON.stringify({ type: WsMessageType.SYNC_GAME }));
 
-          // Drain any queued messages
           while (messageQueue.current.length > 0) {
             const msg = messageQueue.current[0];
             try {
@@ -292,35 +367,24 @@ export function useWebSocket(user: User) {
               event.reason || "No reason given"
             }`,
           );
-          action.setConnection(WsConnectionStatus.DISCONNECTED);
           wsRef.current = null;
 
           if (!isIntentionalClose.current) {
-            if (reconnectAttempts.current >= MAX_RECONNECT_ATTEMPTS) {
-              console.error("[WS] Max reconnect attempts reached. Giving up.");
-              action.setConnection(WsConnectionStatus.FAILED);
-              return;
-            }
-
-            const baseDelay = 1000;
-            const maxDelay = 30000;
-            const exponentialDelay = Math.min(
-              baseDelay * Math.pow(2, reconnectAttempts.current),
-              maxDelay,
-            );
-            const jitter = exponentialDelay * 0.2 * Math.random();
-            const finalDelay = Math.floor(exponentialDelay + jitter);
-
-            reconnectAttempts.current++;
-            reconnectTimeout.current = setTimeout(connectWebSocket, finalDelay);
+            scheduleReconnect();
           }
         };
       });
     },
-    [handleMessage, startHeartbeat, clearHeartbeat],
+    [scheduleReconnect, handleMessage, startHeartbeat, clearHeartbeat],
   );
 
   useEffect(() => {
+    connectRef.current = connect;
+  }, [connect]);
+
+  useEffect(() => {
+    connect();
+
     const handleOffline = () => {
       console.warn("[WS] Network offline detected.");
       isIntentionalClose.current = true;
@@ -331,6 +395,7 @@ export function useWebSocket(user: User) {
     };
 
     const handleOnline = () => {
+      console.warn("[WS] Network back online. Reconnecting...");
       isIntentionalClose.current = false;
       reconnectAttempts.current = 0;
       connect();

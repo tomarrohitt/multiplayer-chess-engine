@@ -37,8 +37,6 @@ export interface AuthenticatedWebSocket extends WebSocket {
   chatRooms?: Set<string>;
 }
 
-// ── Ticket system ─────────────────────────────────────────────────────────────
-
 const TICKET_TTL_SECONDS = 30;
 const TICKET_PREFIX = "ws:ticket:";
 
@@ -60,7 +58,6 @@ async function resolveUserFromTicket(ticket: string): Promise<User> {
     throw new AuthError("Invalid or expired ticket");
   }
 
-  // One-time use — delete immediately after resolving
   await redis.del(`${TICKET_PREFIX}${ticket}`);
 
   const user = await db.query.user.findFirst({
@@ -77,7 +74,6 @@ async function resolveUserFromTicket(ticket: string): Promise<User> {
 export function registerWsTicketRoute(app: Express): void {
   app.get("/api/ws/ticket", async (req, res) => {
     try {
-      // Request comes through Vercel proxy → same origin → cookies present
       const session = await auth.api.getSession({
         headers: req.headers as Record<string, string>,
       });
@@ -93,9 +89,32 @@ export function registerWsTicketRoute(app: Express): void {
       return res.status(500).json({ error: "Internal server error" });
     }
   });
-}
 
-// ── WebSocket server ──────────────────────────────────────────────────────────
+  app.get("/api/health/stream", async (req, res) => {
+    const session = await auth.api.getSession({
+      headers: req.headers as Record<string, string>,
+    });
+
+    if (!session?.user) {
+      return res.status(401).end();
+    }
+
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.flushHeaders();
+
+    res.write(`event: ready\ndata: ${JSON.stringify({ status: "up" })}\n\n`);
+
+    const keepAlive = setInterval(() => {
+      res.write(`: ping\n\n`);
+    }, 20_000);
+
+    req.on("close", () => {
+      clearInterval(keepAlive);
+    });
+  });
+}
 
 export function initializeWebSocketServer(server: Server): void {
   const wss = new WebSocketServer({ server });
@@ -208,7 +227,6 @@ export function initializeWebSocketServer(server: Server): void {
           return;
         }
 
-        // Authenticated — route all messages normally
         routeMessage(ws, raw).catch((err) => {
           console.error("[Fatal Router Error]", err);
         });

@@ -25,7 +25,6 @@ app.use(
     credentials: true,
   }),
 );
-
 app.use(requestLogger);
 app.use(express.json());
 

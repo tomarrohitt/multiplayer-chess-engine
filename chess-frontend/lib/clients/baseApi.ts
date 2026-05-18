@@ -1,6 +1,6 @@
-const API_URL = process.env.INTERNAL_API_URL;
 const ORIGIN_URL = process.env.NEXT_PUBLIC_ORIGIN_URL;
-
+const isDev = process.env.NODE_ENV === "development";
+const API_URL = isDev ? `${process.env.INTERNAL_API_URL}/api` : "/api";
 type SmartBody = BodyInit | Record<string, unknown> | null | undefined;
 
 type NextFetchOptions = Omit<RequestInit, "body"> & {
@@ -14,9 +14,9 @@ type NextFetchOptions = Omit<RequestInit, "body"> & {
 
 function normalizeBody(
   body: SmartBody,
-  customHeaders?: HeadersInit,
+  headers: HeadersInit | undefined,
 ): { body?: BodyInit; headers: Headers } {
-  const headers = new Headers(customHeaders);
+  const finalHeaders = new Headers(headers);
 
   if (
     body &&
@@ -25,37 +25,35 @@ function normalizeBody(
     !(body instanceof Blob) &&
     !(body instanceof ArrayBuffer)
   ) {
-    if (!headers.has("Content-Type")) {
-      headers.set("Content-Type", "application/json");
+    if (!finalHeaders.has("Content-Type")) {
+      finalHeaders.set("Content-Type", "application/json");
     }
     return {
       body: JSON.stringify(body),
-      headers,
+      headers: finalHeaders,
     };
   }
 
-  return { body: body as BodyInit | undefined, headers };
+  return { body: body as BodyInit | undefined, headers: finalHeaders };
 }
-
 export async function baseApi(
   endpoint: string,
   options: NextFetchOptions = {},
-): Promise<Response> {
-  const { body, headers: optionHeaders, ...rest } = options;
+) {
+  const { body, headers, ...rest } = options;
 
   const { body: finalBody, headers: finalHeaders } = normalizeBody(
     body,
-    optionHeaders,
+    headers,
   );
+  finalHeaders.set("Origin", ORIGIN_URL!);
 
-  if (!finalHeaders.has("Origin")) {
-    finalHeaders.set("Origin", ORIGIN_URL ?? "http://localhost:3000");
-  }
-
-  return fetch(`${API_URL}${endpoint}`, {
+  const res = await fetch(`${API_URL}${endpoint}`, {
     ...rest,
     credentials: "omit",
     body: finalBody,
     headers: finalHeaders,
   });
+
+  return res;
 }

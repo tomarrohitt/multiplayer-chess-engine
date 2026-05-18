@@ -1,5 +1,11 @@
 import type { NextConfig } from "next";
 
+const API_URL = process.env.INTERNAL_API_URL;
+
+if (!API_URL) {
+  throw new Error("INTERNAL_API_URL is not defined");
+}
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -14,16 +20,16 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
-    dangerouslyAllowLocalIP: true,
   },
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: "https://risenetup-chess-monolith.hf.space/api/:path*",
+        destination: `${API_URL}/api/:path*`,
       },
     ];
   },
+
   reactCompiler: true,
 };
 

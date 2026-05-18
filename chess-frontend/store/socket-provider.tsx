@@ -6,8 +6,9 @@ import {
   useRef,
   useMemo,
   useState,
+  useCallback,
 } from "react";
-import { useWebSocket } from "@/hooks/use-websocket";
+import { useServerHealth, useWebSocket } from "@/hooks/use-websocket";
 import { useGameStore } from "@/store/use-game-store";
 import { useRouter, usePathname } from "next/navigation";
 import { User } from "@/types/auth";
@@ -55,7 +56,6 @@ export function SocketProvider({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const wsApi = useWebSocket(user);
   const activeGameId = useGameStore((s) => s.activeGame?.gameId);
   const queueStatus = useGameStore((s) => s.queueStatus);
   const redirectedRef = useRef<string | null>(null);
@@ -63,9 +63,13 @@ export function SocketProvider({
   const wasChallenging = useRef(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  useEffect(() => {
-    wsApi.connect();
-  }, [wsApi.connect, wsApi]);
+  const ws = useWebSocket(user);
+
+  useServerHealth(
+    useCallback(() => {
+      ws.connect();
+    }, [ws]),
+  );
 
   useEffect(() => {
     if (queueStatus === "waiting") {
@@ -118,40 +122,40 @@ export function SocketProvider({
 
   const contextValue = useMemo(
     () => ({
-      joinQueue: wsApi.joinQueue,
-      leaveQueue: wsApi.leaveQueue,
-      makeMove: wsApi.makeMove,
-      resign: wsApi.resign,
-      offerDraw: wsApi.offerDraw,
-      declineDraw: wsApi.declineDraw,
-      acceptDraw: wsApi.acceptDraw,
-      offerRematch: wsApi.offerRematch,
-      declineRematch: wsApi.declineRematch,
-      acceptRematch: wsApi.acceptRematch,
-      spectateGame: wsApi.spectateGame,
-      leaveSpectator: wsApi.leaveSpectator,
-      joinGameChat: wsApi.joinGameChat,
+      joinQueue: ws.joinQueue,
+      leaveQueue: ws.leaveQueue,
+      makeMove: ws.makeMove,
+      resign: ws.resign,
+      offerDraw: ws.offerDraw,
+      declineDraw: ws.declineDraw,
+      acceptDraw: ws.acceptDraw,
+      offerRematch: ws.offerRematch,
+      declineRematch: ws.declineRematch,
+      acceptRematch: ws.acceptRematch,
+      spectateGame: ws.spectateGame,
+      leaveSpectator: ws.leaveSpectator,
+      joinGameChat: ws.joinGameChat,
       sendChatMessage: (gameId: string, content: string) => {
-        wsApi.sendChatMessage(gameId, content);
+        ws.sendChatMessage(gameId, content);
       },
-      leaveGameChat: wsApi.leaveGameChat,
-      sendDirectMessage: wsApi.sendDirectMessage,
-      markChatRead: wsApi.markChatRead,
-      markAllChatsRead: wsApi.markAllChatsRead,
+      leaveGameChat: ws.leaveGameChat,
+      sendDirectMessage: ws.sendDirectMessage,
+      markChatRead: ws.markChatRead,
+      markAllChatsRead: ws.markAllChatsRead,
       offerChallenge: (targetId: string, tc: string) => {
         wasChallenging.current = true;
-        wsApi.offerChallenge(targetId, tc);
+        ws.offerChallenge(targetId, tc);
       },
       acceptChallenge: (targetId: string, tc: string) => {
         wasChallenging.current = true;
-        wsApi.acceptChallenge(targetId, tc);
+        ws.acceptChallenge(targetId, tc);
       },
       declineChallenge: (targetId: string) => {
         wasChallenging.current = false;
-        wsApi.declineChallenge(targetId);
+        ws.declineChallenge(targetId);
       },
     }),
-    [wsApi],
+    [ws],
   );
 
   return (
