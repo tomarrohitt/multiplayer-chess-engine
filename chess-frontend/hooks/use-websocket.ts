@@ -236,7 +236,9 @@ export function useWebSocket(user: User) {
             }
             break;
           case WsMessageType.ERROR:
+            if (msg.payload === "Not authenticated") break;
             console.error("[WS] Server error:", msg.payload);
+
             break;
           case WsMessageType.QUEUE_LEFT:
           case WsMessageType.PLAYER_RECONNECTED:
