@@ -1,9 +1,7 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-const isDev = process.env.NODE_ENV === "development";
-
-const API_URL = isDev ? `${process.env.INTERNAL_API_URL}/api` : "/api";
+const API_URL = `${process.env.INTERNAL_API_URL}/api`;
 
 type SmartBody = BodyInit | Record<string, unknown> | null | undefined;
 

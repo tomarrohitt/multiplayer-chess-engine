@@ -1,6 +1,5 @@
 const ORIGIN_URL = process.env.NEXT_PUBLIC_ORIGIN_URL;
-const isDev = process.env.NODE_ENV === "development";
-const API_URL = isDev ? `${process.env.INTERNAL_API_URL}/api` : "/api";
+const API_URL = `${process.env.INTERNAL_API_URL}/api`;
 type SmartBody = BodyInit | Record<string, unknown> | null | undefined;
 
 type NextFetchOptions = Omit<RequestInit, "body"> & {
