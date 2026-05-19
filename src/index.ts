@@ -28,8 +28,6 @@ app.use(
 app.use(requestLogger);
 app.use(express.json());
 
-// app.use(selectRateLimiter);
-
 app.use((req, res, next) => {
   const matchedRoute = routeConfigs.find(
     (config) =>
@@ -59,6 +57,8 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// app.use(selectRateLimiter);
 
 app.all("/api/auth/{*any}", toNodeHandler(auth));
 
