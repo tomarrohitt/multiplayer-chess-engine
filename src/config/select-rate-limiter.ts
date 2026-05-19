@@ -33,7 +33,8 @@ export const selectRateLimiter = (
     (path.startsWith("/api/friends") ||
       path.startsWith("/api/games") ||
       path.startsWith("/api/chat") ||
-      path.startsWith("/api/user"))
+      path.startsWith("/api/user") ||
+      (path.startsWith("/api/auth") && method === "GET"))
   ) {
     return generalLimiter(req, res, next);
   }
