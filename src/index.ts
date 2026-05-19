@@ -16,6 +16,7 @@ import { requestLogger } from "./lib/logger";
 import { routeConfigs } from "./config/routes";
 import { env } from "./config/env";
 import { currentUser } from "./lib/utils/get-current-user";
+import { selectRateLimiter } from "./config/select-rate-limiter";
 
 const app = express();
 
@@ -27,6 +28,8 @@ app.use(
 );
 app.use(requestLogger);
 app.use(express.json());
+
+app.use(selectRateLimiter);
 
 app.use((req, res, next) => {
   const matchedRoute = routeConfigs.find(

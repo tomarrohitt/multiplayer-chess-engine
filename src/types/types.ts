@@ -57,6 +57,7 @@ export enum WsMessageType {
 
   AUTH = "AUTH",
   AUTH_SUCCESS = "AUTH_SUCCESS",
+  RATE_LIMITED = "RATE_LIMITED",
 }
 
 export enum GameStatus {

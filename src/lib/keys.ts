@@ -9,4 +9,10 @@ export const Keys = {
   drawOffer: (userId: string) => `draw_offer_${userId}`,
   getBlockedUsersCacheKey: (userId: string) => `blocked_users:${userId}`,
   getBlockedIdsCacheKey: (userId: string) => `blocked_ids:${userId}`,
+  wsRateLimitKey: (
+    prefix: string,
+    userId: string,
+    event: string,
+    currentTimestamp: number,
+  ) => `rl:ws:${prefix}:${userId}:${event}:${currentTimestamp}`,
 };

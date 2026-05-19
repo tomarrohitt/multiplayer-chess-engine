@@ -39,6 +39,10 @@ import {
 } from "../../api/repository/chat-repository";
 import { redis } from "../redis/redis-client";
 import { Keys } from "../../lib/keys";
+import {
+  checkWsRateLimit,
+  getRateLimitMessage,
+} from "@/config/ws-rate-limiter";
 
 function sendWs(
   ws: AuthenticatedWebSocket,
@@ -50,6 +54,32 @@ function sendWs(
   }
 }
 
+async function isRateLimited(
+  ws: AuthenticatedWebSocket,
+  eventType: WsMessageType,
+): Promise<boolean> {
+  const result = await checkWsRateLimit(ws.user.id, eventType);
+
+  if (!result.allowed) {
+    const message = getRateLimitMessage(result.limitedBy!);
+    const retryAfterSec = Math.ceil(result.retryAfterMs / 1000);
+
+    sendWs(ws, WsMessageType.RATE_LIMITED, {
+      message,
+      retryAfter: retryAfterSec,
+    });
+
+    console.log(
+      `[RateLimit] user=${ws.user.id} event=${eventType} ` +
+        `limitedBy=${result.limitedBy} retryAfterMs=${result.retryAfterMs}`,
+    );
+
+    return true;
+  }
+
+  return false;
+}
+
 export async function routeMessage(
   ws: AuthenticatedWebSocket,
   rawMessage: string,
@@ -57,6 +87,10 @@ export async function routeMessage(
   try {
     const parsedData = JSON.parse(rawMessage);
     const envelope = WsMessageSchema.parse(parsedData);
+
+    if (envelope.type !== WsMessageType.PING) {
+      if (await isRateLimited(ws, envelope.type)) return;
+    }
 
     switch (envelope.type) {
       case WsMessageType.JOIN_QUEUE: {
@@ -111,7 +145,6 @@ export async function routeMessage(
           await broadcastGameUpdate(payload.gameId, moveMadeMessage);
         } catch (err: unknown) {
           const isKnownError = err instanceof DomainError;
-
           const userMessage = isKnownError
             ? err.userMessage
             : "Action rejected.";

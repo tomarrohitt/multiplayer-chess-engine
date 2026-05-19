@@ -103,7 +103,6 @@ const firstNames = [
   "Jagdeep",
   "Keshav",
   "Mahesh",
-
   "Neha",
   "Priya",
   "Pooja",
@@ -260,7 +259,6 @@ const lastNames = [
   "Khatri",
   "Chaudhary",
   "Solanki",
-  "Chauhan",
   "Tomar",
   "Shekhawat",
   "Bhati",
@@ -269,7 +267,6 @@ const lastNames = [
   "Panwar",
   "Kulkarni",
   "Deshpande",
-  "Joshi",
   "Apte",
   "Phadke",
   "Gokhale",
@@ -294,11 +291,7 @@ const lastNames = [
   "Srinivasan",
   "Venkatesan",
   "Narayanan",
-  "Iyer",
   "Iyengar",
-  "Pillai",
-  "Nair",
-  "Menon",
   "Kurup",
   "Warrier",
   "Panicker",
@@ -306,12 +299,8 @@ const lastNames = [
   "Shetty",
   "Hegde",
   "Acharya",
-  "Bhat",
-  "Reddy",
   "Naidu",
   "Goud",
-  "Yadav",
-  "Rao",
   "Chowdhury",
   "Patnaik",
   "Mahapatra",
@@ -368,7 +357,23 @@ const generateUsername = (first: string, last: string) => {
 };
 
 async function seedIndianUsers(count: number) {
-  console.log(`🚀 Generating ${count} mock users...`);
+  console.log("🔍 Verifying database status before seeding...");
+
+  try {
+    const existingUsers = await db.select().from(user).limit(1);
+    if (existingUsers.length > 10) {
+      console.log(
+        "✨ Users already exist in the database. Skipping seed to prevent duplication.",
+      );
+      return;
+    }
+  } catch (err) {
+    console.error("❌ Failed to query existing users table:");
+    console.error(err);
+    throw err;
+  }
+
+  console.log(`🚀 Database is empty. Generating ${count} mock users...`);
 
   const mockUsers = [];
 
@@ -408,12 +413,12 @@ async function seedIndianUsers(count: number) {
   console.log(`🎉 Done. Total inserted: ${inserted}/${count}`);
 }
 
-seedIndianUsers(30000)
+seedIndianUsers(600)
   .then(() => {
-    console.log("🏁 Seeding completed");
+    console.log("🏁 Seeding process completed successfully");
     process.exit(0);
   })
   .catch((err) => {
-    console.error("💥 Fatal error:", err);
+    console.error("💥 Fatal error during seeding:", err);
     process.exit(1);
   });
