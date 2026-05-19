@@ -28,18 +28,8 @@ export const selectRateLimiter = (
     return authLimiter(req, res, next);
   }
 
-  if (
-    method === "GET" &&
-    (path.startsWith("/api/friends") ||
-      path.startsWith("/api/games") ||
-      path.startsWith("/api/chat") ||
-      path.startsWith("/api/user") ||
-      (path.startsWith("/api/auth") && method === "GET"))
-  ) {
-    return generalLimiter(req, res, next);
-  }
-
   if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
     return writeLimiter(req, res, next);
   }
+  return generalLimiter(req, res, next);
 };
