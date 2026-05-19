@@ -22,7 +22,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
   }),
 );
 app.use(requestLogger);
@@ -58,7 +59,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(selectRateLimiter);
+app.use(selectRateLimiter);
 
 app.all("/api/auth/{*any}", toNodeHandler(auth));
 
