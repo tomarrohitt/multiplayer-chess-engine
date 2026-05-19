@@ -28,7 +28,7 @@ app.use(
 app.use(requestLogger);
 app.use(express.json());
 
-app.use(selectRateLimiter);
+// app.use(selectRateLimiter);
 
 app.use((req, res, next) => {
   const matchedRoute = routeConfigs.find(
