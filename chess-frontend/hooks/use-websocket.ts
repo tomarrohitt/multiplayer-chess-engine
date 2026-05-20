@@ -7,6 +7,7 @@ import {
   WsConnectionStatus,
   WsMessageType,
 } from "@/types/ws";
+import z from "zod";
 
 const WS_URL =
   process.env.NEXT_PUBLIC_WS_URL ?? "wss://risenetup-chess-monolith.hf.space";
@@ -152,7 +153,7 @@ export function useWebSocket(user: User) {
             "[WS Client] Message validation failed! Raw:",
             raw,
             "Zod Errors:",
-            result.error.format(),
+            z.treeifyError(result.error),
           );
           return;
         }
