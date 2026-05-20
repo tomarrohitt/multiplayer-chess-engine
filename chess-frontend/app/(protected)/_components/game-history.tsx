@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { GameStatus } from "@/types/chess";
 import { cn, scrollClass } from "@/lib/utils";
+import { getRecentGames } from "@/actions/game";
+import { NoGameFound } from "./no-game-found";
 
 export type Player = {
   id: string;
@@ -48,49 +50,46 @@ function formatDate(iso: string) {
   });
 }
 
-export function GameHistory({
-  games,
+export async function GameHistory({
   currentUserId,
 }: {
-  games: GameRecord[] | null;
   currentUserId: string;
 }) {
-  if (!games || games.length === 0) {
-    return (
-      <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-8 text-center text-xs text-zinc-600 tracking-widest uppercase">
-        No recent games
-      </div>
-    );
+  const games = await getRecentGames(currentUserId);
+
+  if (games?.length === 0) {
+    return <NoGameFound />;
   }
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex items-center justify-between mb-5 px-1">
+    <div className="flex flex-col w-full h-full">
+      <div className="flex items-end justify-between mb-6 pb-4 border-b border-zinc-800/60">
         <div>
-          <p className="font-mono text-xs font-semibold text-amber-600/70 tracking-[0.18em] uppercase mb-1">
-            Game history
+          <p className="font-mono text-[10px] font-semibold tracking-[0.22em] uppercase text-amber-500/70 mb-2 flex items-center gap-2">
+            <span className="inline-block w-4 h-px bg-amber-500/50" />
+            Recent
           </p>
-          <h2 className="font-serif text-xl font-light text-zinc-100 tracking-tight leading-none">
-            Recent games
+          <h2 className="text-2xl font-black tracking-tight text-zinc-100 leading-none">
+            History
           </h2>
         </div>
-        <div className="flex flex-col items-end gap-1">
-          <span className="font-mono text-lg font-medium text-zinc-200 leading-none">
-            {games.length}
-          </span>
-          <span className="font-mono text-[10px] text-zinc-700 tracking-[0.14em] uppercase font-semibold">
+        <div className="text-right">
+          <p className="font-mono text-xl font-semibold text-zinc-200 leading-none">
+            {games?.length}
+          </p>
+          <p className="font-mono text-[10px] text-zinc-600 tracking-[0.14em] uppercase mt-1">
             played
-          </span>
+          </p>
         </div>
       </div>
 
       <div
         className={cn(
-          "w-fullflex flex-col gap-0.5 overflow-y-auto max-h-[calc(100vh-160px)]",
+          "flex flex-col gap-px overflow-y-auto max-h-[calc(100vh-220px)]",
           scrollClass,
         )}
       >
-        {games.map((game) => {
+        {games?.map((game) => {
           const isWhite = game.white.id === currentUserId;
           const isBlack = game.black.id === currentUserId;
           const isPlayer = isWhite || isBlack;
@@ -103,30 +102,22 @@ export function GameHistory({
           const opponent = isWhite ? game.black : game.white;
           const player = isWhite ? game.white : game.black;
 
-          let pillClass = "bg-zinc-900 text-white border-zinc-800";
-          let pillLabel = "—";
+          const badgeClass = abandoned
+            ? "bg-zinc-900/60 text-zinc-600 border-zinc-800/40"
+            : won
+              ? "bg-emerald-950/60 text-emerald-400 border-emerald-900/60"
+              : lost
+                ? "bg-rose-950/60 text-rose-400 border-rose-900/60"
+                : "bg-zinc-900 text-zinc-400 border-zinc-700/50";
 
-          if (abandoned) {
-            pillClass = "bg-zinc-900/60 text-white border-zinc-800/40";
-            pillLabel = "—";
-          } else if (won) {
-            pillClass =
-              "bg-emerald-950/60 text-emerald-400 border-emerald-900/60";
-            pillLabel = "W";
-          } else if (lost) {
-            pillClass = "bg-rose-950/60 text-rose-400 border-rose-900/60";
-            pillLabel = "L";
-          } else if (draw) {
-            pillClass = "bg-zinc-900 text-white border-zinc-700/50";
-            pillLabel = "D";
-          }
+          const badgeLabel = abandoned ? "—" : won ? "W" : lost ? "L" : "D";
 
           const diffColor =
             player.diff > 0
-              ? "text-emerald-500"
+              ? "text-emerald-400"
               : player.diff < 0
-                ? "text-rose-500"
-                : "text-zinc-700";
+                ? "text-rose-400"
+                : "text-zinc-600";
 
           const diffLabel =
             player.diff > 0
@@ -139,42 +130,50 @@ export function GameHistory({
             <Link
               key={game.id}
               href={`/game/${game.id}`}
-              className="group flex items-center gap-3 px-3 py-2.5 rounded-lg border border-transparent hover:bg-zinc-900/60 hover:border-zinc-800/60 transition-all duration-100"
+              className="group flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:bg-zinc-900/70 hover:border-zinc-800/60 transition-all duration-100 relative"
             >
+              <span className="absolute inset-y-2 left-0 w-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-150 bg-amber-500/40" />
+
               <div
-                className={`w-8 h-8 rounded-md flex items-center justify-center text-[10px] font-mono font-semibold tracking-wider border shrink-0 ${pillClass}`}
+                className={cn(
+                  "w-8 h-8 rounded-md flex items-center justify-center font-mono text-[10px] font-bold border shrink-0 tracking-wider",
+                  badgeClass,
+                )}
               >
-                {pillLabel}
+                {badgeLabel}
               </div>
 
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-zinc-300 group-hover:text-zinc-100 transition-colors truncate font-mono">
+                <p className="font-mono text-sm font-medium text-zinc-300 group-hover:text-zinc-100 transition-colors truncate">
                   {opponent.username}
-                  <span className="text-zinc-600 font-normal ml-1.5">
+                  <span className="text-zinc-600 font-normal text-xs ml-1.5">
                     ({opponent.matchRating})
                   </span>
-                </div>
+                </p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-[10px] text-zinc-600 font-mono">
+                  <span className="font-mono text-[10px] text-zinc-600">
                     {game.timeControl}
                   </span>
-                  <span className="w-0.5 h-0.5 rounded-full bg-zinc-800 shrink-0" />
-                  <span className="text-[10px] text-zinc-600 font-mono">
+                  <span className="w-0.5 h-0.5 rounded-full bg-zinc-700 shrink-0" />
+                  <span className="font-mono text-[10px] text-zinc-600">
                     {formatStatus(game.status)}
                   </span>
-                  <span className="w-0.5 h-0.5 rounded-full bg-zinc-800 shrink-0" />
-                  <span className="text-[10px] text-zinc-600 font-mono">
+                  <span className="w-0.5 h-0.5 rounded-full bg-zinc-700 shrink-0" />
+                  <span className="font-mono text-[10px] text-zinc-600">
                     {formatDate(game.createdAt)}
                   </span>
                 </div>
               </div>
 
               {isPlayer && (
-                <div className="shrink-0 text-right">
-                  <div className={`text-xs font-mono font-medium ${diffColor}`}>
-                    {diffLabel}
-                  </div>
-                </div>
+                <p
+                  className={cn(
+                    "font-mono text-xs font-semibold shrink-0",
+                    diffColor,
+                  )}
+                >
+                  {diffLabel}
+                </p>
               )}
             </Link>
           );

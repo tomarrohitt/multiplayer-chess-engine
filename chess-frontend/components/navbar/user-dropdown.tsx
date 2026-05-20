@@ -18,7 +18,7 @@ type UserDropdownProps = {
 
 export function UserDropdown({ user }: UserDropdownProps) {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 hover:bg-zinc-800 transition-colors focus:outline-none data-[state=open]:bg-zinc-800">
           <Avatar className="h-8 w-8 rounded-full">

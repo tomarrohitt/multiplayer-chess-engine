@@ -51,14 +51,11 @@ export function LobbyClient() {
   return (
     <div className="flex flex-col items-center justify-center w-full">
       <div className="w-full max-w-2xl">
-        {/* Header */}
         <div className="mb-10">
-          <p className="font-mono text-xs tracking-[0.18em] text-amber-500/80 uppercase mb-2">
+          <p className="font-mono text-2xs tracking-[0.18em] text-amber-500/80 uppercase mb-2">
             Find a game
           </p>
-          <h1 className="font-serif text-5xl font-light text-zinc-100 tracking-tight mb-2">
-            Play Chess
-          </h1>
+
           <p className="font-mono text-sm text-zinc-600 tracking-wide">
             Choose your time control
           </p>

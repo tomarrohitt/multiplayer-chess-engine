@@ -22,9 +22,12 @@ const JoinButton = ({ label, value }: JoinButtonProps) => {
   return (
     <button
       onClick={handleClick}
-      className="w-full py-2.5 px-4 rounded-md bg-zinc-800/60 hover:bg-zinc-700/80 border border-zinc-700/40 hover:border-zinc-600/60 text-zinc-300 hover:text-zinc-100 font-mono font-medium text-sm tracking-wide transition-all duration-100 hover:scale-[1.015] active:scale-[0.985]"
+      className="group relative w-full py-2 px-4 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800/80 hover:border-zinc-700 transition-all duration-150 text-left overflow-hidden"
     >
-      {label}
+      <span className="absolute inset-y-0 left-0 w-0.5 bg-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-150 rounded-full" />
+      <span className="font-mono text-sm font-medium text-zinc-400 group-hover:text-zinc-100 transition-colors duration-150 pl-1">
+        {label}
+      </span>
     </button>
   );
 };
