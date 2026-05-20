@@ -65,7 +65,7 @@ export function PlayerCard({
           </span>
           {player.rating !== undefined && (
             <span className="font-mono text-xs text-zinc-300 shrink-0">
-              {player.rating}
+              ({player.rating})
             </span>
           )}
           {isActive && (

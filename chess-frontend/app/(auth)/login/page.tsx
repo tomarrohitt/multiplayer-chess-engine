@@ -5,7 +5,7 @@ import { Suspense } from "react";
 export default function LoginPage() {
   return (
     <div
-      className="rounded-2xl p-8 relative overflow-hidden"
+      className="rounded-2xl p-6 relative overflow-hidden"
       style={{
         backgroundColor: "#111111",
         border: "1px solid rgba(201,168,76,0.2)",

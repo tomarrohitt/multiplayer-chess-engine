@@ -136,7 +136,7 @@ export default async function AuthLayout({
             e4 · e5 · Nf3
           </span>
 
-          <div className="relative z-1 w-full max-w-105">{children}</div>
+          <div className="relative z-1 w-full">{children}</div>
         </div>
       </div>
     </>

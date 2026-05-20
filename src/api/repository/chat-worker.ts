@@ -113,7 +113,15 @@ async function recoverDeadLetters() {
       };
     });
 
-    await saveMessagesBatch(msgsToInsert);
+    try {
+      await saveMessagesBatch(msgsToInsert);
+    } catch (batchErr) {
+      console.error(
+        `[Chat Worker] DLQ batch insert failed permanently. Moving to poison list.`,
+        batchErr,
+      );
+      await redis.rpush("chat:poison_letters", ...rawMsgs);
+    }
 
     await redis.ltrim("chat:dead_letters", rawMsgs.length, -1);
   } catch (err) {

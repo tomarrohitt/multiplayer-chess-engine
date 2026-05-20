@@ -5,7 +5,6 @@ import { startPlayerTimer } from "../game/timer";
 import {
   WsMessageType,
   GameStatus,
-  GameUser,
   PLAYER_COLOR,
   PlayerInfo,
 } from "../../types/types";
@@ -39,17 +38,26 @@ export async function handleJoinQueue(
   userId: string,
   timeControl: string,
 ): Promise<void> {
-  const LOCK_KEY = `lock:matchmaking:${userId}`;
+  const LOCK_KEY = Keys.lockMatchMaking(userId);
 
-  const isSearching = await redis.set(LOCK_KEY, "locked", "EX", 60, "NX");
+  const searchSessionId = uuidv7();
+
+  const timestamp = new Date().toISOString().replace("T", " ").replace("Z", "");
+
+  const isSearching = await redis.set(
+    LOCK_KEY,
+    searchSessionId,
+    "EX",
+    60,
+    "NX",
+  );
 
   if (!isSearching) {
     console.warn(
-      `[Queue] ${userId} already has an active search loop. Ignoring.`,
+      `[${timestamp}] [Queue] ${userId} already has an active search loop. Ignoring.`,
     );
     return;
   }
-
   try {
     const userData = await db.query.user.findFirst({
       where: eq(user.id, userId),
@@ -58,7 +66,6 @@ export async function handleJoinQueue(
     if (!userData) return;
 
     const rating = userData.rating;
-
     const playerInfo = {
       id: userId,
       username: userData.username,
@@ -72,11 +79,14 @@ export async function handleJoinQueue(
     const searchTiers = [100, 300, 500, 1000, 1500];
 
     for (const range of searchTiers) {
-      const stillInQueue = await redis.zscore(MATCHMAKING_QUEUE_KEY, userId);
-
-      if (!stillInQueue) {
+      const currentLock = await redis.get(LOCK_KEY);
+      if (currentLock !== searchSessionId) {
+        console.log(`[Queue] Old search loop cancelled for ${userId}`);
         return;
       }
+
+      const stillInQueue = await redis.zscore(MATCHMAKING_QUEUE_KEY, userId);
+      if (!stillInQueue) return;
 
       const minRating = rating - range;
       const maxRating = rating + range;
@@ -107,7 +117,6 @@ export async function handleJoinQueue(
             };
 
         await redis.hdel(MATCHMAKING_INFO_KEY, userId, opponentId);
-
         await createNewMatch(playerInfo, opponentInfo, timeControl);
         return;
       }
@@ -115,22 +124,32 @@ export async function handleJoinQueue(
       await new Promise((resolve) => setTimeout(resolve, 10000));
     }
 
-    const finalCheck = await redis.zrem(MATCHMAKING_QUEUE_KEY, userId);
-    if (finalCheck) {
-      await redis.hdel(MATCHMAKING_INFO_KEY, userId);
-      await sendToUser(userId, {
-        type: WsMessageType.MATCHMAKING_TIMEOUT,
-        payload: { message: "No suitable opponent found. Try again?" },
-      });
+    const finalLock = await redis.get(LOCK_KEY);
+    if (finalLock === searchSessionId) {
+      const finalCheck = await redis.zrem(MATCHMAKING_QUEUE_KEY, userId);
+      if (finalCheck) {
+        await redis.hdel(MATCHMAKING_INFO_KEY, userId);
+        await sendToUser(userId, {
+          type: WsMessageType.MATCHMAKING_TIMEOUT,
+          payload: { message: "No suitable opponent found. Try again?" },
+        });
+      }
     }
   } finally {
-    await redis.del(LOCK_KEY);
+    const currentLock = await redis.get(LOCK_KEY);
+    if (currentLock === searchSessionId) {
+      await redis.del(LOCK_KEY);
+    }
   }
 }
 
 export async function handleLeaveQueue(userId: string): Promise<void> {
   await redis.zrem(MATCHMAKING_QUEUE_KEY, userId);
   await redis.hdel(MATCHMAKING_INFO_KEY, userId);
+
+  await redis.del(Keys.lockMatchMaking(userId));
+
+  console.log(`[Queue] User left queue and lock released: ${userId}`);
 }
 
 export async function createNewMatch(
@@ -165,6 +184,8 @@ export async function createNewMatch(
   );
 
   await Promise.all([
+    redis.del(Keys.lockMatchMaking(whiteUser.id)),
+    redis.del(Keys.lockMatchMaking(blackUser.id)),
     redis.set(Keys.userActiveGame(whiteUser.id), gameId),
     redis.set(Keys.userActiveGame(blackUser.id), gameId),
   ]);

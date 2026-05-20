@@ -2,12 +2,14 @@
 import { useGameStore } from "@/store/use-game-store";
 import { useSocket } from "@/store/socket-provider";
 import { Loader2 } from "lucide-react";
+import { QueueStatus } from "@/types/chess";
 
 export function SearchingModal() {
-  const { queueStatus, queueTimeControl } = useGameStore((s) => s);
+  const queueStatus = useGameStore((s) => s.queueStatus);
+  const queueTimeControl = useGameStore((s) => s.queueTimeControl);
   const { leaveQueue } = useSocket();
 
-  if (queueStatus !== "waiting") return null;
+  if (queueStatus !== QueueStatus.WAITING) return null;
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -22,7 +24,8 @@ export function SearchingModal() {
         <div className="text-center">
           <h2 className="text-lg font-bold mb-1">Finding Opponent</h2>
           <p className="text-zinc-400 text-sm">
-            Searching for a {queueTimeControl ? `${queueTimeControl} ` : ""}match...
+            Searching for a {queueTimeControl ? `${queueTimeControl} ` : ""}
+            match...
           </p>
         </div>
 

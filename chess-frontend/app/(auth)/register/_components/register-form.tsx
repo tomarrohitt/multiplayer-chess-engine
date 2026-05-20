@@ -28,7 +28,7 @@ export const RegisterForm = () => {
   const [state, action, pending] = useActionState(register, initialState);
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-3">
       {state.message && (
         <div
           className={`p-4 rounded-lg text-sm border ${

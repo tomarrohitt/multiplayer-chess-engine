@@ -1,8 +1,12 @@
-"use client";
 import { useState } from "react";
 import { useGameStore } from "@/store/use-game-store";
 import { useSocket } from "@/store/socket-provider";
-import { DrawOffer, GameOverState, GameStatus } from "@/types/chess";
+import {
+  DrawOffer,
+  GameOverState,
+  GameStatus,
+  QueueStatus,
+} from "@/types/chess";
 
 export function GameOverOverlay({
   gameOver,
@@ -14,10 +18,13 @@ export function GameOverOverlay({
   const activeGame = useGameStore((s) => s.activeGame);
   const rematchOffer = useGameStore((s) => s.rematchOffer);
   const rematchOfferSent = useGameStore((s) => s.rematchOfferSent);
+
+  const queueStatus = useGameStore((s) => s.queueStatus);
+
   const { joinQueue, offerRematch } = useSocket();
   const [isVisible, setIsVisible] = useState(true);
 
-  if (!isVisible) return null;
+  if (!isVisible || queueStatus === QueueStatus.WAITING) return null;
 
   const won = gameOver.winnerId === userId;
   const isDraw =
@@ -97,6 +104,7 @@ export function GameOverOverlay({
               onClick={() => {
                 const tc = activeGame?.timeControl;
                 if (tc) joinQueue(tc);
+                setIsVisible(false);
               }}
               className="flex-1 py-2.5 font-mono text-[11px] font-medium text-emerald-400/80 bg-emerald-950/30 border border-emerald-900/40 rounded-lg hover:bg-emerald-950/50 hover:text-emerald-300 transition-all"
             >

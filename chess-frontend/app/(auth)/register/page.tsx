@@ -4,7 +4,7 @@ import { RegisterForm } from "./_components/register-form";
 export default function RegisterPage() {
   return (
     <div
-      className="rounded-2xl p-8 relative overflow-hidden"
+      className="rounded-2xl p-6 relative overflow-hidden"
       style={{
         backgroundColor: "#111111",
         border: "1px solid rgba(201,168,76,0.2)",
@@ -20,10 +20,10 @@ export default function RegisterPage() {
         }}
       />
 
-      <div className="text-center mb-8">
-        <div className="flex justify-center mb-4">
+      <div className="text-center mb-5">
+        <div className="flex justify-center mb-2">
           <span
-            className="text-5xl select-none"
+            className="text-2xl select-none"
             style={{
               color: "#c9a84c",
               filter: "drop-shadow(0 0 12px rgba(201,168,76,0.4))",
@@ -33,7 +33,7 @@ export default function RegisterPage() {
           </span>
         </div>
         <h1
-          className="text-3xl font-bold mb-1"
+          className="text-xl font-bold mb-0.5"
           style={{
             color: "#f0e6c8",
             fontFamily: "'Georgia', 'Times New Roman', serif",
@@ -49,7 +49,7 @@ export default function RegisterPage() {
 
       <RegisterForm />
 
-      <div className="relative my-6">
+      <div className="relative my-3">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full" style={{ borderTop: "1px solid #222" }} />
         </div>

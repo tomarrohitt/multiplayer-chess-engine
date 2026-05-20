@@ -1,6 +1,7 @@
 export const Keys = {
   game: (gameId: string) => `game_${gameId}`,
-  queue: (timeControl: string) => `queue_${timeControl}`,
+  queue: (timeControl: string) => `matchmaking:queue${timeControl}`,
+  lockMatchMaking: (userId: string) => `lock:matchmaking:${userId}`,
   timerJob: (gameId: string) => `timer_${gameId}`,
   reconnectJob: (gameId: string, userId: string) =>
     `reconnect_${gameId}_${userId}`,

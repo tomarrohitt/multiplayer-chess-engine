@@ -158,6 +158,13 @@ export async function flushGameToDatabase(
       redis.del(Keys.userActiveGame(blackUser.id)),
       cancelAbandonmentJob(gameId),
     ]);
+
+    const timestamp = new Date()
+      .toISOString()
+      .replace("T", " ")
+      .replace("Z", "");
+
+    console.log(`[${timestamp} Flushed]: The game metadata.`);
   } catch (error) {
     console.error(`[Storage] Failed to flush game ${gameId} to DB:`, error);
     await redis.hdel(gameKey, "isFlushed");
