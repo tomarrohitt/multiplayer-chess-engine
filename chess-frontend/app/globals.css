@@ -10,6 +10,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  scrollbar-gutter: stable both-edges;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
