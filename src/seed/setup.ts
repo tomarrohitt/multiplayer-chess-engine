@@ -1,8 +1,8 @@
 import postgres from "postgres";
-import "dotenv/config";
 import { env } from "../config/env";
 import fs from "fs";
 import crypto from "crypto";
+import "dotenv/config";
 
 const sql = postgres(env.DATABASE_URL!);
 

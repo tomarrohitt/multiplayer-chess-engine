@@ -357,7 +357,7 @@ const generateUsername = (first: string, last: string) => {
 };
 
 async function seedIndianUsers(count: number) {
-  console.log("🔍 Verifying database status before seeding...");
+  console.log("Verifying database status before seeding...");
 
   try {
     const existingUsers = await db.select().from(user).limit(1);
@@ -368,12 +368,12 @@ async function seedIndianUsers(count: number) {
       return;
     }
   } catch (err) {
-    console.error("❌ Failed to query existing users table:");
+    console.error("Failed to query existing users table:");
     console.error(err);
     throw err;
   }
 
-  console.log(`🚀 Database is empty. Generating ${count} mock users...`);
+  console.log(`Database is empty. Generating ${count} mock users...`);
 
   const mockUsers = [];
 
@@ -392,9 +392,9 @@ async function seedIndianUsers(count: number) {
     });
   }
 
-  console.log("📦 Inserting into database in chunks...");
+  console.log("Inserting into database in chunks...");
 
-  const chunkSize = 500;
+  const chunkSize = 100;
   let inserted = 0;
 
   for (let i = 0; i < mockUsers.length; i += chunkSize) {
@@ -403,14 +403,14 @@ async function seedIndianUsers(count: number) {
     try {
       await db.insert(user).values(chunk);
       inserted += chunk.length;
-      console.log(`✅ Inserted ${inserted}/${count}`);
+      console.log(`Inserted ${inserted}/${count}`);
     } catch (err) {
-      console.error("❌ Chunk insert failed:");
+      console.error("Chunk insert failed:");
       console.error(JSON.stringify(err, null, 2));
     }
   }
 
-  console.log(`🎉 Done. Total inserted: ${inserted}/${count}`);
+  console.log(`Done. Total inserted: ${inserted}/${count}`);
 }
 
 seedIndianUsers(600)
@@ -419,6 +419,6 @@ seedIndianUsers(600)
     process.exit(0);
   })
   .catch((err) => {
-    console.error("💥 Fatal error during seeding:", err);
+    console.error("Fatal error during seeding:", err);
     process.exit(1);
   });

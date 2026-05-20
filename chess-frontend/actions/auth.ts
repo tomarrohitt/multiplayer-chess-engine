@@ -193,9 +193,22 @@ export async function logout() {
     },
   });
   const cookieStore = await cookies();
-  cookieStore.getAll().forEach((cookie) => {
-    cookieStore.delete(cookie.name);
+
+  const cookiesToClear = [
+    "__Secure-better-auth.session_token",
+    "__Secure-better-auth.session_data",
+    "better-auth.session_token",
+    "better-auth.session_data",
+  ];
+
+  cookiesToClear.forEach((name) => {
+    cookieStore.delete({
+      name,
+      path: "/",
+      secure: name.startsWith("__Secure-"),
+    });
   });
+
   redirect("/login");
 }
 
