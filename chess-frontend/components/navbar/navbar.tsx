@@ -31,20 +31,26 @@ function NavbarSkeleton() {
     <div className="flex justify-between items-center gap-6">
       <nav className="relative flex gap-1">
         <div className="px-4 py-2">
-          <div className="h-4 w-12 bg-zinc-800 rounded animate-pulse" />
+          <div className="h-4 w-10 bg-zinc-800 rounded animate-pulse" />
         </div>
         <div className="px-4 py-2">
           <div className="h-4 w-28 bg-zinc-800 rounded animate-pulse" />
         </div>
+        <div className="px-4 py-2">
+          <div className="h-4 w-24 bg-zinc-800 rounded animate-pulse" />
+        </div>
+        <div className="px-4 py-2">
+          <div className="h-4 w-14 bg-zinc-800 rounded animate-pulse" />
+        </div>
       </nav>
 
       <div className="flex items-center gap-4 pl-6 border-l border-zinc-800 ml-10">
-        <div className="flex items-center gap-2 py-2">
-          <div className="w-9 h-9 bg-zinc-800 rounded-full animate-pulse" />
-          <div className="hidden lg:flex flex-col items-start">
+        <div className="flex items-center gap-2.5 px-2.5 py-1.5">
+          <div className="w-8 h-8 bg-zinc-800 rounded-full animate-pulse" />
+          <div className="hidden sm:block">
             <div className="h-4 w-20 bg-zinc-800 rounded animate-pulse" />
           </div>
-          <div className="w-4 h-4 bg-zinc-800 rounded animate-pulse" />
+          <div className="w-3.5 h-3.5 bg-zinc-800 rounded animate-pulse" />
         </div>
       </div>
     </div>

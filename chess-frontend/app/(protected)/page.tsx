@@ -2,6 +2,8 @@ import { getUserFromSession } from "@/actions/session";
 import { LobbyClient } from "@/components/game/lobby-client";
 import { GameHistory } from "@/app/(protected)/_components/game-history";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import GameHistoryLoading from "./_components/game-history-loading";
 
 export default async function HomePage() {
   const user = await getUserFromSession();
@@ -13,7 +15,9 @@ export default async function HomePage() {
         <LobbyClient />
       </div>
       <div className="w-full lg:w-96 shrink-0">
-        <GameHistory currentUserId={user.id} />
+        <Suspense fallback={<GameHistoryLoading />}>
+          <GameHistory currentUserId={user.id} />
+        </Suspense>
       </div>
     </main>
   );

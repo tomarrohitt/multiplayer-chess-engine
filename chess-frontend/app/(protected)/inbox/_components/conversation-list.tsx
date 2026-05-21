@@ -34,10 +34,10 @@ export const ConversationList = () => {
   const sidebarOrder = useInbox((s) => s.sidebarOrder);
 
   return (
-    <>
+    <div className="scrollbar-none">
       {sidebarOrder.map((id) => (
         <ConnectedConversationItem fid={id} key={id} />
       ))}
-    </>
+    </div>
   );
 };

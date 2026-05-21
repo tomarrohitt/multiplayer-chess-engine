@@ -79,12 +79,6 @@ export async function handleJoinQueue(
     const searchTiers = [100, 300, 500, 1000, 1500];
 
     for (const range of searchTiers) {
-      const currentLock = await redis.get(LOCK_KEY);
-      if (currentLock !== searchSessionId) {
-        console.log(`[Queue] Old search loop cancelled for ${userId}`);
-        return;
-      }
-
       const stillInQueue = await redis.zscore(MATCHMAKING_QUEUE_KEY, userId);
       if (!stillInQueue) return;
 
@@ -148,8 +142,6 @@ export async function handleLeaveQueue(userId: string): Promise<void> {
   await redis.hdel(MATCHMAKING_INFO_KEY, userId);
 
   await redis.del(Keys.lockMatchMaking(userId));
-
-  console.log(`[Queue] User left queue and lock released: ${userId}`);
 }
 
 export async function createNewMatch(

@@ -7,7 +7,7 @@ export function ProfileHeader({ rating }: { rating: number }) {
         <span className="text-[28px] drop-shadow-[0_0_6px_rgba(74,222,128,0.4)]">
           ♔
         </span>
-        <span className="text-[20px] font-bold tracking-[0.05em] text-[#e5e5e5]">
+        <span className="text-[20px] font-bold tracking-wider text-[#e5e5e5]">
           ChessBoard
         </span>
       </div>

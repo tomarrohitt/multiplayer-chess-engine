@@ -118,7 +118,7 @@ export const wsAuthLimiter = rateLimit({
     });
   },
   windowMs: 1 * 60 * 1000,
-  max: 15,
+  max: 20,
   message: "You are browsing too fast!",
   keyGenerator: createEndpointKey,
 });

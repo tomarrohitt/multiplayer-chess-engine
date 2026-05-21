@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 import { login } from "@/actions/auth";
@@ -68,20 +67,12 @@ export const LoginForm = () => {
       </Field>
 
       <Field className="gap-0">
-        <div className="flex items-center justify-between mb-1.5">
-          <FieldLabel
-            htmlFor="password"
-            className="text-xs font-semibold uppercase tracking-widest text-[#5a5a5a]"
-          >
-            Password
-          </FieldLabel>
-          <Link
-            href="/forgot-password"
-            className="text-xs transition-colors text-[#c9a84c] hover:text-[#e8c86a]"
-          >
-            Forgot password?
-          </Link>
-        </div>
+        <FieldLabel
+          htmlFor="password"
+          className="text-xs font-semibold uppercase tracking-widest text-[#5a5a5a]"
+        >
+          Password
+        </FieldLabel>
         <Input
           id="password"
           name="password"
