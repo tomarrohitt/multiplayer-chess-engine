@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/command";
 import { SearchChatUserInfo } from "@/types/chat";
 import { useInbox } from "./inbox-context";
+import { useRouter } from "next/navigation";
 
 export function SearchConversation({
   friends,
@@ -29,7 +30,12 @@ export function SearchConversation({
     () => Object.values(conversationsMap),
     [conversationsMap],
   );
-  // const router = useRouter();
+  const router = useRouter();
+
+  const onClick = (fid: string) => {
+    setOpen(false);
+    router.push(`/inbox/${fid}`);
+  };
 
   return (
     <>
@@ -63,7 +69,7 @@ export function SearchConversation({
                     key={user.id}
                     value={`${user.name} ${user.username}`}
                     className="flex items-center gap-3 py-2 cursor-pointer"
-                    onClick={() => setOpen(false)}
+                    onSelect={() => onClick(user.id)}
                   >
                     <Avatar className="w-8 h-8 shrink-0">
                       <AvatarImage src={user.image || ""} alt={user.name} />
@@ -100,7 +106,7 @@ export function SearchConversation({
                     key={f.id}
                     value={`${f.name} ${f.username}`}
                     className="flex items-center gap-2 py-1.5 cursor-pointer"
-                    onClick={() => setOpen(false)}
+                    onSelect={() => onClick(f.id)}
                   >
                     <Avatar className="w-7 h-7 shrink-0">
                       <AvatarImage src={f.image || ""} alt={f.name} />
