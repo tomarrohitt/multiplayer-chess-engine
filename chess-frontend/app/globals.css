@@ -14,6 +14,35 @@
 :root {
   scrollbar-gutter: stable both-edges;
 }
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+/* The track (background) */
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Very dark gray/almost black */
+  border-radius: 0; /* Forces the sharp, boxy edges */
+}
+
+/* The thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+  background: #404040; /* Lighter dark gray to contrast with the track */
+  border-radius: 0; /* Keeps the thumb perfectly square */
+}
+
+/* Hover effect for the thumb */
+::-webkit-scrollbar-thumb:hover {
+  background: #525252;
+}
+
+/* 2. Firefox (uses standard CSS properties) */
+* {
+  scrollbar-width: auto; /* 'auto' keeps it standard width, 'thin' makes it narrower */
+  scrollbar-color: #404040 #1a1a1a; /* thumb-color track-color */
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

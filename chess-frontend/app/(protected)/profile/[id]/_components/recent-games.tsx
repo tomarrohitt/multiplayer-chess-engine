@@ -2,7 +2,6 @@ import { getUserFromSession } from "@/actions/session";
 import { GameStatus } from "@/types/chess";
 import { Swords } from "lucide-react";
 import Link from "next/link";
-import { cn, scrollClass } from "@/lib/utils";
 import { GameboardSnapshot } from "@/app/(protected)/profile/[id]/_components/gameboard-snapshot";
 import {
   avgMoveTime,
@@ -44,12 +43,7 @@ export async function RecentGames({ id }: { id: string }) {
         </span>
       </div>
 
-      <div
-        className={cn(
-          "flex flex-col gap-3 overflow-y-auto max-h-150 pr-2",
-          scrollClass,
-        )}
-      >
+      <div className="flex flex-col gap-3 overflow-y-auto pr-2">
         {games.map((game) => {
           const isWhite = game.white.id === user.id;
           const won = game.winnerId === user.id;

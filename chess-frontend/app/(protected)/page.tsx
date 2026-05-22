@@ -14,7 +14,7 @@ export default async function HomePage() {
       <div className="flex-1">
         <LobbyClient />
       </div>
-      <div className="w-full lg:w-96 shrink-0">
+      <div className="lg:w-96">
         <Suspense fallback={<GameHistoryLoading />}>
           <GameHistory currentUserId={user.id} />
         </Suspense>
