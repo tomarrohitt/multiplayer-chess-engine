@@ -25,7 +25,7 @@ export const NoGameFound = () => {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center gap-6 py-12 px-4">
-        <LottieAnimation data={NotFoundCat} className="" />
+        <LottieAnimation data={NotFoundCat} />
 
         <div className="text-center space-y-2">
           <p className="text-zinc-300 font-semibold text-sm tracking-tight">
