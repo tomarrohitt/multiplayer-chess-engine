@@ -17,6 +17,9 @@ import { routeConfigs } from "./config/routes";
 import { env } from "./config/env";
 import { currentUser } from "./lib/utils/get-current-user";
 import { selectRateLimiter } from "./config/select-rate-limiter";
+import { db } from "./infrastructure/db/db";
+import { sql } from "drizzle-orm";
+import { redis } from "./infrastructure/redis/redis-client";
 
 const app = express();
 
@@ -26,6 +29,7 @@ app.use(
     credentials: true,
   }),
 );
+
 app.use(requestLogger);
 app.use(express.json());
 
@@ -62,6 +66,26 @@ app.use((req, res, next) => {
 app.use(selectRateLimiter);
 
 app.all("/api/auth/{*any}", toNodeHandler(auth));
+
+app.get("/api/keep-alive", async (req, res) => {
+  try {
+    await db.execute(sql`SELECT 1`);
+    const redisPing = await redis.ping();
+
+    if (redisPing !== "PONG") {
+      throw new Error("Redis did not respond with PONG");
+    }
+
+    return res.status(200).json({
+      status: "awake",
+      db: "active",
+      redis: "active",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.error("Keep-alive failed:", err);
+  }
+});
 
 app.use("/api/games", gameRouter);
 app.use("/api/friends", friendRouter);

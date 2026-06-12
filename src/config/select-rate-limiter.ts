@@ -14,7 +14,7 @@ export const selectRateLimiter = (
   const path = req.originalUrl;
   const method = req.method;
 
-  if (path.startsWith("/api/health")) {
+  if (path.startsWith("/api/health") || path.startsWith("/api/keep-alive")) {
     return next();
   }
   if (
