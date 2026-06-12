@@ -10,7 +10,11 @@ export interface RouteConfig {
 
 export const routeConfigs: RouteConfig[] = [
   {
-    path: "/api/ws/keep-alive",
+    path: "/api/keep-alive",
+    rules: [{ method: "GET", protected: false }],
+  },
+  {
+    path: "/api/health",
     rules: [{ method: "GET", protected: false }],
   },
   {
