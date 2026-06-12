@@ -1,0 +1,13 @@
+name: Scheduled Keep Alive
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping-endpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit Keep-Alive Endpoint
+        run: curl -s -o /dev/null https://risenetup-chess-monolith.hf.space/api/keep-alive
