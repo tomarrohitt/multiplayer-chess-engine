@@ -1,20 +1,19 @@
 import { getUserFromSession } from "@/actions/session";
 import { LobbyClient } from "@/components/game/lobby-client";
-import { GameHistory } from "@/app/(protected)/_components/game-history";
+
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import GameHistoryLoading from "./_components/game-history-loading";
+import { GameHistory } from "./_components/game-history";
 
 export default async function HomePage() {
   const user = await getUserFromSession();
   if (!user) redirect("/login");
 
   return (
-    <main className="flex-1 flex flex-col lg:flex-row max-w-6xl mx-auto w-full gap-10 pt-6">
-      <div className="flex-1">
-        <LobbyClient />
-      </div>
-      <div className="lg:w-96">
+    <main className="flex justify-between px-auto bg-neutral-4">
+      <LobbyClient />
+      <div className="w-96 bg-neutral-5">
         <Suspense fallback={<GameHistoryLoading />}>
           <GameHistory currentUserId={user.id} />
         </Suspense>

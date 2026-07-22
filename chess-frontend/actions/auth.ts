@@ -33,7 +33,7 @@ export async function login(
 
     return {
       success: false,
-      message: "Validation failed",
+      message: "",
       errors: simplifyZodErrors(formattedErrors),
       inputs: {
         email: data.email,
@@ -83,7 +83,7 @@ export async function register(_: unknown, formData: FormData) {
     const formattedErrors = z.treeifyError(result.error);
     return {
       success: false,
-      message: "Validation failed",
+      message: "",
       errors: simplifyZodErrors(formattedErrors),
       inputs: {
         name: data.name,

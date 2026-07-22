@@ -171,8 +171,8 @@ export const ArchiveBoard = memo(function ArchiveBoard({
 
   return (
     <div className="min-h-[calc(100vh-80px)] mt-2 flex items-center justify-center">
-      <div className="flex gap-4 items-start w-full max-w-5xl">
-        <div className="flex flex-col gap-2 min-w-0 flex-1 max-w-140">
+      <div className="flex gap-4 items-start w-full max-w-5xl flex-col lg:flex-row">
+        <div className="flex flex-col gap-2 min-w-0 flex-1 max-w-140 ">
           <PlayerArea
             player={topPlayer}
             color={topColor}

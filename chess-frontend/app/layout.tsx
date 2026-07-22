@@ -3,7 +3,6 @@ import { Raleway } from "next/font/google";
 
 import { cn, scrollClass } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import Navbar from "@/components/navbar/navbar";
 
 import "./globals.css";
 
@@ -23,12 +22,11 @@ export default async function RootLayout({
     <html lang="en" className={cn("font-sans", raleway.variable)}>
       <body
         className={cn(
-          "min-h-screen flex flex-col bg-black",
+          "min-h-screen flex flex-col bg-neutral-6",
           raleway.className,
           scrollClass,
         )}
       >
-        <Navbar />
         {children}
         <Toaster position="bottom-right" duration={30} />
       </body>
