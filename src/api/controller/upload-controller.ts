@@ -51,7 +51,7 @@ export const uploadAvatar = async (req: Request, res: Response) => {
       image: newImagePath,
     });
   } catch (error) {
-    console.error("Cloudinary upload error:", error);
+    console.error("Cloudinary upload error:", JSON.stringify(error));
     return res.status(500).json({ error: "Failed to upload image" });
   }
 };

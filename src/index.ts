@@ -101,10 +101,6 @@ app.all("/api/{*any}", (req, res) => {
   });
 });
 
-app.all("{*any}", (req, res) => {
-  res.status(404).json({ error: "Endpoint not Found" });
-});
-
 const server = http.createServer(app);
 
 initializeWebSocketServer(server);
