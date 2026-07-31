@@ -33,9 +33,9 @@ const UnProtectedSection = () => {
       </Link>
       <Link
         href="/register"
-        className="relative px-5 py-2.5 rounded-xl bg-[#c9a84c] text-white text-sm font-bold tracking-widest uppercase shadow-lg shadow-blue-900/20 hover:from-[#e8c86a] hover:to-[#c9a84c] hover:shadow-[0_4px_24px_rgba(201,168,76,0.35)] disabled:hover:from-[#c9a84c] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-none inline-block"
+        className="relative px-5 py-2.5 rounded-sm bg-[#c9a84c] text-white text-sm font-bold tracking-widest uppercase shadow-lg shadow-blue-900/20 hover:from-[#e8c86a] hover:to-[#c9a84c] hover:shadow-[0_4px_24px_rgba(201,168,76,0.35)] disabled:hover:from-[#c9a84c] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-none inline-block"
       >
-        Register{" "}
+        Register
       </Link>
     </div>
   );

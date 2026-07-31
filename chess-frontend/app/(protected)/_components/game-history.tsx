@@ -23,14 +23,14 @@ export async function GameHistory({
   }
 
   return (
-    <div className="max-h-svh overflow-auto scrollbar-none">
+    <div className={cn("max-h-svh overflow-auto scrollbar-none", scrollClass)}>
       <div className="flex items-center justify-between px-6 mt-8 mb-4">
         <h2 className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-green-5">
           <span className="h-4 w-0.5 bg-green-5/50" />
           Recent Games
         </h2>
         <span className="text-xs font-medium text-neutral-200">
-          {games?.length ?? 0} matches played
+          {games?.length ?? 0} matches
         </span>
       </div>
 

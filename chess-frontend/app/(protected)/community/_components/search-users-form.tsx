@@ -36,7 +36,7 @@ export function SearchUsersForm({
       />
       <input
         placeholder={placeholder}
-        className="w-full h-10 rounded-xl pl-9 pr-4 text-sm text-white placeholder:text-zinc-600 outline-none transition-all"
+        className="w-full h-10 rounded-xs pl-9 pr-4 text-sm text-white placeholder:text-zinc-600 outline-none transition-all"
         onChange={(e) => setText(e.target.value)}
         value={text}
         style={{

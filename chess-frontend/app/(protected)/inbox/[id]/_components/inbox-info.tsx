@@ -14,7 +14,7 @@ export function InboxInfo({ user }: InboxInfoProps) {
 
   return (
     <div
-      className="w-72 flex flex-col rounded-2xl overflow-hidden shrink-0"
+      className="w-72 flex flex-col rounded-sm overflow-hidden shrink-0"
       style={{
         background: "rgba(255,255,255,0.03)",
         border: "1px solid rgba(255,255,255,0.06)",

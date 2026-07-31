@@ -20,31 +20,31 @@ export function UserDropdown({ user }: UserDropdownProps) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 hover:bg-zinc-800 transition-colors focus:outline-none data-[state=open]:bg-zinc-800">
+        <button className="flex items-center gap-2.5 rounded-sm px-2.5 py-1.5 hover:bg-neutral-800 transition-colors focus:outline-none data-[state=open]:bg-neutral-800">
           <Avatar className="h-8 w-8 rounded-full">
             <AvatarImage
               src={user.image ?? ""}
               alt={user.username}
               className="object-cover"
             />
-            <AvatarFallback className="rounded-full bg-zinc-700 text-xs font-bold text-zinc-300">
+            <AvatarFallback className="rounded-full bg-neutral-700 text-xs font-bold text-neutral-300">
               {getInitials(user.name)}
             </AvatarFallback>
           </Avatar>
-          <span className="hidden sm:block text-sm font-medium text-zinc-200">
+          <span className="hidden sm:block text-sm font-medium text-neutral-200">
             {user.username}
           </span>
           <ChevronDown
-            className="h-3.5 w-3.5 text-zinc-400"
+            className="h-3.5 w-3.5 text-neutral-400"
             strokeWidth={2.5}
           />
         </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        align="end"
+        align="start"
         sideOffset={8}
-        className="w-56 rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-xl"
+        className="w-56 rounded-sm border border-neutral-800 bg-neutral-900 p-1.5 shadow-xl"
       >
         <div className="flex items-center gap-3 px-2.5 py-2 mb-1">
           <Avatar className="h-9 w-9 rounded-full">
@@ -53,27 +53,27 @@ export function UserDropdown({ user }: UserDropdownProps) {
               alt={user.username}
               className="object-cover"
             />
-            <AvatarFallback className="rounded-full bg-zinc-700 text-xs font-bold text-zinc-300">
+            <AvatarFallback className="rounded-full bg-neutral-700 text-xs font-bold text-neutral-300">
               {getInitials(user.name)}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col min-w-0">
-            <span className="text-sm font-semibold text-zinc-100 truncate">
+            <span className="text-sm font-semibold text-neutral-100 truncate">
               {user.username}
             </span>
             {user.name && (
-              <span className="text-xs text-zinc-500 truncate">
+              <span className="text-xs text-neutral-500 truncate">
                 {user.name}
               </span>
             )}
           </div>
         </div>
-        <DropdownMenuSeparator className="bg-zinc-800 mb-1.5" />
+        <DropdownMenuSeparator className="bg-neutral-800 mb-1.5" />
         <Item href={`/profile/${user.id}`} icon={UserIcon}>
           View Profile
         </Item>
 
-        <DropdownMenuSeparator className="bg-zinc-800 my-1.5" />
+        <DropdownMenuSeparator className="bg-neutral-800 my-1.5" />
         <DropdownMenuItem asChild>
           <LogoutButton />
         </DropdownMenuItem>
@@ -97,7 +97,7 @@ function Item({
     <DropdownMenuItem asChild>
       <Link
         href={href}
-        className="flex items-center gap-2.5 w-full py-2 rounded-lg text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors cursor-pointer"
+        className="flex items-center gap-2.5 w-full py-2 rounded-sm text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors cursor-pointer"
       >
         <Icon className="h-4 w-4 shrink-0" />
         {children}

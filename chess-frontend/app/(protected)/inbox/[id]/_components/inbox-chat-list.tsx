@@ -197,7 +197,7 @@ export function InboxChatList({
             {showTimeSeparator && (
               <div className="flex justify-center my-4">
                 <span
-                  className="text-[10px] text-zinc-500 font-semibold bg-white/5 px-3 py-1 rounded-full tracking-wider"
+                  className="text-2xs text-zinc-500 font-semibold bg-white/5 px-3 py-1 rounded-full tracking-wider"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   {formatSeparatorDate(msg.createdAt)}
@@ -221,7 +221,7 @@ export function InboxChatList({
                 {msg.content}
               </div>
               {isLastInGroup && (
-                <span className="text-[10px] text-zinc-500 mt-1 px-1 font-mono">
+                <span className="text-2xs text-zinc-500 mt-1 px-1 font-mono">
                   {formatTime(msg.createdAt)}
                 </span>
               )}

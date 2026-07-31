@@ -4,9 +4,12 @@ import { useGameStore } from "@/store/use-game-store";
 import { useRouter } from "next/navigation";
 import { GameStatus } from "@/types/chess";
 
-type JoinButtonProps = { label: string; value: string; category: string };
+type JoinButtonProps = {
+  label: string;
+  value: string;
+};
 
-const JoinButton = ({ label, value, category }: JoinButtonProps) => {
+const JoinButton = ({ label, value }: JoinButtonProps) => {
   const { joinQueue } = useSocket();
   const activeGame = useGameStore((s) => s.activeGame);
   const router = useRouter();
@@ -22,9 +25,9 @@ const JoinButton = ({ label, value, category }: JoinButtonProps) => {
   return (
     <button
       onClick={handleClick}
-      className="h-34 w-50 bg-neutral-5 shadow-2xl rounded-xs transition-all duration-300"
+      className="h-34 w-50 bg-neutral-5 shadow-5xl rounded-xs transition-all duration-200 hover:bg-neutral-6 flex flex-col flex-center"
     >
-      <span className="">{label}</span>
+      <span className="text-3xl">{label}</span>
     </button>
   );
 };

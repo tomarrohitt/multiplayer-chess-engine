@@ -112,9 +112,9 @@ export function Gameboard({ gameId, user }: GameboardProps) {
   const topTimeMs = topPlayer.timeLeftMs;
 
   return (
-    <div className="min-h-[calc(100vh-80px)] mt-2 flex items-center justify-center">
-      <div className="flex gap-4 items-start w-full max-w-5xl flex-row lg:flex-col">
-        <div className="flex flex-col gap-2 min-w-0 flex-1 max-w-140">
+    <div className="min-h-svh flex items-center justify-center">
+      <div className="flex gap-10 items-center justify-center w-full flex-col lg:flex-row">
+        <div className="flex flex-col gap-1 max-w-140">
           <PlayerArea
             player={topPlayer}
             color={topColor}

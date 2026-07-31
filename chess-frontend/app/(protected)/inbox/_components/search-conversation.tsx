@@ -45,7 +45,7 @@ export function SearchConversation({
           className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-hover:text-zinc-400 transition-colors"
         />
         <div
-          className="w-full h-9 rounded-xl pl-9 pr-4 text-sm text-zinc-600 flex items-center transition-all"
+          className="w-full h-9 rounded-sm pl-9 pr-4 text-sm text-zinc-600 flex items-center transition-all"
           style={{
             background: "rgba(255,255,255,0.04)",
             border: "1px solid rgba(255,255,255,0.07)",

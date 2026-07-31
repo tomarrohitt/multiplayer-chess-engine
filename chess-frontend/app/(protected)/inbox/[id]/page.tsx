@@ -26,7 +26,7 @@ export default async function InboxIdPage({
   return (
     <>
       <div
-        className="flex-1 flex flex-col rounded-2xl h-[calc(100vh-90px)] overflow-y-auto"
+        className="flex-1 flex flex-col rounded-sm  overflow-y-auto h-[calc(100svh-16px)]"
         style={{
           background: "rgba(255,255,255,0.03)",
           border: "1px solid rgba(255,255,255,0.06)",

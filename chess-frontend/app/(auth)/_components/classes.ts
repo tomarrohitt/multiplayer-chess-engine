@@ -4,5 +4,5 @@ export const classes = {
   input: "bg-neutral-5 rounded-xs py-6 transition-colors",
   error: "mt-1 text-xs text-destructive/80",
   button:
-    "w-full bg-green-3 py-3 rounded-xs flex-center hover-gradient uppercase shadow-sm",
+    "w-full bg-green-5/50 py-3 rounded-xs flex-center hover:bg-green-5/40 uppercase shadow-sm transition-all",
 };

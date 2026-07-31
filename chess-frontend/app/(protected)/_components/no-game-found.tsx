@@ -1,37 +1,27 @@
-import { LottieAnimation } from "@/components/ui/lottie-animation";
-import NotFoundCat from "@/public/assets/lottie/404-cat.json";
+import { cn, scrollClass } from "@/lib/utils";
+import NotFoundCat from "@/public/assets/lottie/404-cat.svg";
+import Image from "next/image";
 
 export const NoGameFound = () => {
   return (
-    <div className="flex flex-col w-full h-full">
-      <div className="flex items-end justify-between mb-6 pb-4 border-b border-zinc-800/60">
-        <div>
-          <p className="font-mono text-[10px] font-semibold tracking-[0.22em] uppercase text-amber-500/70 mb-2 flex items-center gap-2">
-            <span className="inline-block w-4 h-px bg-amber-500/50" />
-            Recent
-          </p>
-          <h2 className="text-2xl font-black tracking-tight text-zinc-100 leading-none">
-            History
-          </h2>
-        </div>
-        <div className="text-right">
-          <p className="font-mono text-xl font-semibold text-zinc-700 leading-none">
-            0
-          </p>
-          <p className="font-mono text-[10px] text-zinc-700 tracking-[0.14em] uppercase mt-1">
-            played
-          </p>
-        </div>
+    <div className={cn("h-svh overflow-auto scrollbar-none", scrollClass)}>
+      <div className="flex items-center justify-between px-6 mt-8 mb-4">
+        <h2 className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-green-5">
+          <span className="h-4 w-0.5 bg-green-5/50" />
+          Recent Games
+        </h2>
+        <span className="text-xs font-medium text-neutral-200 mr-2">
+          0 matches
+        </span>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center gap-6 py-12 px-4">
-        <LottieAnimation data={NotFoundCat} />
-
+      <div className="flex-1 flex flex-col items-center justify-center gap-6 py-12 px-4 mt-16">
+        <Image src={NotFoundCat} width={500} height={500} alt="not found cat" />
         <div className="text-center space-y-2">
-          <p className="text-zinc-300 font-semibold text-sm tracking-tight">
-            No games played yet
+          <p className="text-neutral-300 font-semibold text-xl tracking-tight">
+            Nothing here yet!
           </p>
-          <p className="font-mono text-[11px] text-zinc-600 leading-relaxed max-w-50">
+          <p className="font-mono text-md text-neutral-500 leading-relaxed max-w-70">
             Your match history will appear here after your first game
           </p>
         </div>

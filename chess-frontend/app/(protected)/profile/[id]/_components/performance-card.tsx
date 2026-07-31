@@ -12,21 +12,21 @@ export function PerformanceCard({
   winRate: string | number;
 }) {
   return (
-    <div className="bg-[#141414] border border-[#242424] rounded-[14px] backdrop-blur-sm py-5.5 px-6">
+    <div className="bg-neutral-5  rounded-sm py-5.5 px-6">
       <div className="flex justify-between items-center mb-3.5">
         <div className="flex items-center gap-2">
           <TrendingUp size={15} color="#4ade80" />
-          <span className="text-[14px] font-semibold text-[#e5e5e5]">
+          <span className="text-[14px] font-semibold text-neutral-100">
             Performance
           </span>
         </div>
-        <span className="text-[13px] text-[#4ade80] font-mono">
+        <span className="text-sm text-green-5 font-medium">
           {winRate}% win rate
         </span>
       </div>
       <div className="h-1.75 rounded bg-[#1a1a1a] flex overflow-hidden gap-0.5">
         <div
-          className="h-full bg-[#4ade80] rounded-l"
+          className="h-full bg-green-5 rounded-l"
           style={{
             width: totalGames ? `${(user.wins / totalGames) * 100}%` : "0%",
           }}

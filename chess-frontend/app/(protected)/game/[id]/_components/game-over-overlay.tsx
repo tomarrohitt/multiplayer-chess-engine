@@ -41,16 +41,6 @@ export function GameOverOverlay({
       : "Black"
     : null;
 
-  let headline = "Draw";
-  let headlineColor = "text-zinc-400";
-  if (isAbandoned && !gameOver.winnerId) {
-    headline = "Aborted";
-    headlineColor = "text-zinc-500";
-  } else if (winnerColor) {
-    headline = won ? "You won" : "You lost";
-    headlineColor = won ? "text-emerald-400" : "text-rose-400";
-  }
-
   let subtitle = isAbandoned
     ? "Game aborted"
     : isDraw
@@ -65,10 +55,10 @@ export function GameOverOverlay({
 
   return (
     <div className="absolute inset-0 bg-black/70 flex items-center justify-center rounded-sm z-50">
-      <div className="relative bg-zinc-950 border border-zinc-800/60 rounded-xl p-6 flex flex-col items-center gap-4 w-[85%] max-w-72 text-center">
+      <div className="relative bg-neutral-7  rounded-sm p-6 flex flex-col items-center gap-4 w-100 h-60 text-center">
         <button
           onClick={() => setIsVisible(false)}
-          className="absolute top-3 right-3 text-zinc-700 hover:text-zinc-400 transition-colors"
+          className="absolute top-3 right-3 text-neutral-700 hover:text-neutral-400 transition-colors"
           aria-label="Close"
         >
           <svg
@@ -86,27 +76,33 @@ export function GameOverOverlay({
         </button>
 
         <div>
-          <h2
-            className={`font-serif text-3xl font-light tracking-tight ${headlineColor}`}
-          >
-            {headline}
+          <h2 className="font-serif text-3xl font-light tracking-tight">
+            Game Over{" "}
           </h2>
-          <p className="font-mono text-[11px] text-zinc-600 mt-1 tracking-wide">
+          <p className="font-mono text-sm text-neutral-600 mt-1 tracking-wide">
             {subtitle}
           </p>
         </div>
 
-        <div className="w-full h-px bg-zinc-800/60" />
-
+        <div className="font-mono text-lg font-medium mt-2">
+          {won ? (
+            <span className="text-green-5/50">Gained 8 points</span>
+          ) : isDraw ? (
+            <span className="text-neutral-400">Rating unchanged</span>
+          ) : (
+            <span className="text-rose-400">Lost 8 points</span>
+          )}
+        </div>
+        <div className="w-full h-px bg-neutral-4" />
         {isPlayer && (
-          <div className="flex w-full gap-2">
+          <div className="flex w-full gap-5">
             <button
               onClick={() => {
                 const tc = activeGame?.timeControl;
                 if (tc) joinQueue(tc);
                 setIsVisible(false);
               }}
-              className="flex-1 py-2.5 font-mono text-[11px] font-medium text-emerald-400/80 bg-emerald-950/30 border border-emerald-900/40 rounded-lg hover:bg-emerald-950/50 hover:text-emerald-300 transition-all"
+              className="flex-1 py-2 font-mono text-sm font-medium bg-green-5/50 hover:bg-green-5/30 rounded-xs transition-all"
             >
               New game
             </button>
@@ -117,18 +113,18 @@ export function GameOverOverlay({
                   activeGame &&
                   offerRematch(activeGame.gameId, activeGame.timeControl)
                 }
-                className="flex-1 py-2.5 font-mono text-[11px] font-medium text-sky-400/80 bg-sky-950/20 border border-sky-900/30 rounded-lg hover:bg-sky-950/40 hover:text-sky-300 transition-all"
+                className="flex-1 py-2 font-mono text-sm font-medium text-white bg-neutral-5 rounded-xs hover:bg-neutral-5/60 transition-all"
               >
                 Rematch
               </button>
             )}
             {rematchOfferSent === DrawOffer.SENT && (
-              <div className="flex-1 py-2.5 font-mono text-[11px] text-zinc-600 bg-zinc-900/40 border border-zinc-800/30 rounded-lg text-center">
+              <div className="flex-1 py-2 font-mono text-sm text-neutral-600 bg-neutral-900/40 border border-neutral-800/30 rounded-sm text-center">
                 Sent...
               </div>
             )}
             {rematchOfferSent === DrawOffer.DECLINE && (
-              <div className="flex-1 py-2.5 font-mono text-[11px] text-rose-500/60 bg-rose-950/20 border border-rose-900/30 rounded-lg text-center">
+              <div className="flex-1 py-2 font-mono text-sm text-rose-500/60 bg-rose-950/20 border border-rose-900/30 rounded-sm text-center">
                 Declined
               </div>
             )}

@@ -11,36 +11,48 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { UserDropdown } from "../navbar/user-dropdown";
+import { getUserFromSession } from "@/actions/session";
+import { Mail, Swords, Trophy, Users } from "lucide-react";
 
 const links = [
-  { name: "Play", href: "/" },
-  { name: "Leaderboard", href: "/leaderboard" },
-  { name: "Community", href: "/community" },
-  { name: "Inbox", href: "/inbox" },
+  { name: "Play", href: "/", icon: Swords },
+  { name: "Inbox", href: "/inbox", icon: Mail },
+  { name: "Community", href: "/community", icon: Users },
+  { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
 ];
 
-export function SidebarApp() {
+export async function SidebarApp() {
+  const user = await getUserFromSession();
+  if (!user) return;
+
   return (
-    <Sidebar collapsible="none" className="h-svh flex flex-col justify-around">
-      <SidebarHeader>
-        <SidebarMenu>
-          <Link href="/" className="w-26 flex-center">
-            Gambit
-          </Link>
-        </SidebarMenu>
+    <Sidebar collapsible="none" className="h-svh flex-center py-4">
+      <SidebarHeader className="flex-center">
+        {/* FIX 1: Removed the invalid <SidebarMenu> wrapper */}
+        <Link
+          className="tracking-[10px] uppercase font-bold text-green-5 hover:text-green-5/80 text-2xl"
+          href="/"
+        >
+          Gambit
+        </Link>
       </SidebarHeader>
-      <SidebarContent>
+
+      <SidebarContent className="flex flex-col w-full justify-center">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="flex flex-col gap-y-4">
-              {links.map((link) => (
-                <SidebarMenuItem key={link.name}>
-                  <SidebarMenuButton>
+            <SidebarMenu className="space-y-2">
+              {links.map(({ icon: Icon, name, href }) => (
+                <SidebarMenuItem
+                  key={name}
+                  className="py-2 hover:bg-neutral-4/10"
+                >
+                  {/* FIX 2: Added `asChild` to prevent <a> from nesting inside <button> */}
+                  <SidebarMenuButton asChild>
                     <Link
-                      href={link.href}
-                      className="text-neutral-0 font-semibold text-lg"
+                      href={href}
+                      className="text-neutral-0 text-lg hover:text-neutral-1 w-full rounded-sm transition-all flex items-center gap-x-2 ml-2"
                     >
-                      {link.name}
+                      <Icon /> {name}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -50,23 +62,9 @@ export function SidebarApp() {
         </SidebarGroup>
         <SidebarGroup />
       </SidebarContent>
-      <SidebarFooter className="">
-        <UserDropdown
-          user={{
-            name: "Rohit Tomar",
-            email: "tomarrohit5034@gmail.com",
-            emailVerified: false,
-            image:
-              "https://res.cloudinary.com/dxggynbng/image/upload/v1782561955/avatars/019da9d5-ca6a-7621-8407-d394ad4874e8-1782561949441.webp",
-            createdAt: new Date("2026-04-20T07:40:53.737Z"),
-            username: "tomarrohitttt",
-            wins: 28,
-            losses: 31,
-            draws: 6,
-            rating: 1015,
-            id: "019da9d5-ca6a-7621-8407-d394ad4874e8",
-          }}
-        />
+
+      <SidebarFooter className="flex-1 justify-end">
+        <UserDropdown user={user} />
       </SidebarFooter>
     </Sidebar>
   );

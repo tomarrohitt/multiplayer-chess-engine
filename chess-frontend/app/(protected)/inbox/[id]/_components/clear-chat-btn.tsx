@@ -19,7 +19,7 @@ export const ClearChatButton = ({ id }: { id: string }) => {
   };
   return (
     <button
-      className="flex items-center gap-3 p-3 rounded-xl hover:bg-red-500/10 transition-colors text-red-500 text-sm font-medium w-full text-left cursor-pointer"
+      className="flex items-center gap-3 p-3 rounded-sm hover:bg-red-500/10 transition-colors text-red-500 text-sm font-medium w-full text-left cursor-pointer"
       onClick={handleClearChat}
       disabled={pending}
     >

@@ -23,7 +23,7 @@ export const PlayerArea = memo(function PlayerArea({
   ...rest
 }: PlayerAreaProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 w-full">
       <PlayerCard
         {...rest}
         pieces={pieces}

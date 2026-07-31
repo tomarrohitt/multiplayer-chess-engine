@@ -61,13 +61,13 @@ const MoveButton = memo(
       <div
         className={cn(
           "ml-3 flex justify-between items-center px-1.5 py-1 rounded transition-colors group/m w-30 font-bold cursor-pointer text-white",
-          isActive && "bg-gray-800",
+          isActive && "bg-neutral-4",
         )}
         data-active={isActive ? "true" : undefined}
         onClick={() => onClick?.(move.index)}
       >
         <SanText san={move.san} color={color} />
-        <span className="text-xs font-mono opacity-80 group-hover/m:opacity-100 transition-opacity">
+        <span className="text-md font-mono text-neutral-300 group-hover:text-neutral-200">
           {move.timeSpent}
         </span>
       </div>
@@ -133,18 +133,18 @@ export const MoveList = memo(function MoveList({
   }, [pairs.length, currentMoveIndex]);
 
   return (
-    <div className="flex flex-col overflow-hidden w-100 h-60 scroll-smooth">
-      <p className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase px-1 pb-2 shrink-0 text-center">
+    <div className="flex flex-col overflow-hidden w-100 h-80 scroll-smooth">
+      <p className="text-neutral-300 text-sm font-bold tracking-widest uppercase px-1 pb-2 shrink-0 text-center">
         Move History
       </p>
       <div
         ref={scrollContainerRef}
         className={cn(
-          "flex-1 overflow-y-auto p-2.5 space-y-0.5 bg-black-700 rounded-xs no-scrollbar",
+          "flex-1 overflow-y-auto p-2.5 space-y-0.5 bg-black-700  no-scrollbar",
         )}
       >
         {pairs.length === 0 ? (
-          <p className="text-zinc-200 text-xs italic px-1 py-4 text-center">
+          <p className="text-neutral-200 text-sm italic px-1 py-4 text-center">
             {live ? "Waiting for first move..." : "No moves to display."}
           </p>
         ) : (
@@ -153,7 +153,7 @@ export const MoveList = memo(function MoveList({
               key={pair.number}
               className="flex items-center cursor-pointer text-sm group py-0.5 gap-x-3"
             >
-              <span className="w-8 text-zinc-200 text-[10px] tabular-nums text-right pr-2 cursor-default select-none">
+              <span className="text-neutral-400 text-lg tabular-nums text-left w-8 cursor-default select-none">
                 {pair.number}.
               </span>
 

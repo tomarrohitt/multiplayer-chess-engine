@@ -170,9 +170,9 @@ export const ArchiveBoard = memo(function ArchiveBoard({
   );
 
   return (
-    <div className="min-h-[calc(100vh-80px)] mt-2 flex items-center justify-center">
-      <div className="flex gap-4 items-start w-full max-w-5xl flex-col lg:flex-row">
-        <div className="flex flex-col gap-2 min-w-0 flex-1 max-w-140 ">
+    <div className="min-h-svh flex items-center justify-center">
+      <div className="flex gap-10 items-center justify-center w-full flex-col lg:flex-row">
+        <div className="flex flex-col gap-1 max-w-140">
           <PlayerArea
             player={topPlayer}
             color={topColor}
@@ -191,8 +191,8 @@ export const ArchiveBoard = memo(function ArchiveBoard({
             }
           />
 
-          <div style={{ width: 500, height: 500 }}>
-            <Chessground width={500} height={500} {...cgConfig} />
+          <div style={{ width: 560, height: 560 }} className="mt-1">
+            <Chessground width={560} height={560} {...cgConfig} />
           </div>
 
           <PlayerArea
@@ -215,12 +215,6 @@ export const ArchiveBoard = memo(function ArchiveBoard({
         </div>
 
         <div className="flex flex-col justify-center items-start relative">
-          <button
-            onClick={() => setIsFlipped((p) => !p)}
-            className="absolute top-5 -left-16 cursor-pointer hover:scale-110 transition-transform p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
-          >
-            <Image src="/flip.svg" alt="Flip board" height={20} width={20} />
-          </button>{" "}
           <div className="flex-1 flex flex-col overflow-hidden p-4">
             <MoveList
               pgn={gameData.pgn}
@@ -236,6 +230,13 @@ export const ArchiveBoard = memo(function ArchiveBoard({
               timeControl={gameData.timeControl}
               isPlayer={isPlayer}
             />
+            <button
+              onClick={() => setIsFlipped((p) => !p)}
+              className="absolute flex justify-center items-center gap-x-2 -bottom-34 -left-8 cursor-pointer transition-transform p-3 rounded-sm bg-neutral-5 hover:bg-neutral-5/60 hover:opacity-80 text-white font-semibold"
+            >
+              <Image src="/flip.svg" alt="Flip board" height={20} width={20} />
+              <span>Flip Board</span>
+            </button>
           </div>
         </div>
       </div>

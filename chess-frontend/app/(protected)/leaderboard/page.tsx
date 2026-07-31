@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -8,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LeaderboardNav } from "./_components/leaderboard-nav";
 
 type Player = {
   player_id: number;
@@ -23,121 +23,56 @@ type Player = {
   url: string;
 };
 
-type LeaderboardsResponse = {
+export type LeaderboardsResponse = {
   live_blitz: Player[];
   live_rapid: Player[];
   live_bullet: Player[];
   daily: Player[];
 };
 
-const TABS: { id: keyof LeaderboardsResponse; label: string; sup: string }[] = [
-  { id: "live_blitz", label: "Blitz", sup: "⚡" },
-  { id: "live_rapid", label: "Rapid", sup: "♟" },
-  { id: "live_bullet", label: "Bullet", sup: "🔥" },
-  { id: "daily", label: "Daily", sup: "🏛" },
-];
-
-function PlayerTitle({ title }: { title?: string }) {
-  if (!title) return null;
-  return (
-    <span className="font-mono text-[10px] font-black tracking-widest text-amber-400 bg-amber-400/10 border border-amber-400/20 px-1.5 py-0.5 rounded-sm">
-      {title}
-    </span>
-  );
-}
-
-function WinLossRecord({
-  wins,
-  draws,
-  losses,
-}: {
-  wins: number;
-  draws: number;
-  losses: number;
-}) {
-  const total = wins + draws + losses;
-  if (total === 0)
-    return <span className="text-zinc-600 text-xs font-mono">—</span>;
-  const pct = Math.round((wins / total) * 100);
-
-  return (
-    <div className="flex flex-col items-end gap-1.5">
-      <div className="flex items-center gap-0.5 font-mono text-xs tabular-nums">
-        <span className="text-emerald-400 font-semibold">{wins}</span>
-        <span className="text-zinc-600 mx-0.5">·</span>
-        <span className="text-zinc-400">{draws}</span>
-        <span className="text-zinc-600 mx-0.5">·</span>
-        <span className="text-rose-400 font-semibold">{losses}</span>
-      </div>
-      <span className="text-[10px] text-zinc-600 font-mono">{pct}% win</span>
-    </div>
-  );
-}
-
 function PodiumCard({ player }: { player: Player }) {
-  const isFirst = player.rank === 1;
   const medalEmoji = player.rank === 1 ? "🥇" : player.rank === 2 ? "🥈" : "🥉";
-  const ratingColor = isFirst
-    ? "text-amber-400"
-    : player.rank === 2
-      ? "text-zinc-300"
-      : "text-orange-300/80";
-  const borderColor = isFirst
-    ? "border-amber-500/30"
-    : player.rank === 2
-      ? "border-zinc-500/30"
-      : "border-orange-700/30";
-  const bgColor = isFirst
-    ? "bg-amber-950/20"
-    : player.rank === 2
-      ? "bg-zinc-800/20"
-      : "bg-orange-950/20";
 
   return (
-    <div
-      className={`relative flex flex-col items-center gap-3 rounded-2xl border ${borderColor} ${bgColor} px-5 py-6 flex-1 min-w-0 overflow-hidden`}
-    >
-      <span className="absolute right-3 top-1 font-serif text-7xl font-black text-white/3 select-none pointer-events-none leading-none">
+    <div className="relative flex flex-col items-center gap-3 rounded-sm bg-neutral-5/70 px-5 py-6 flex-1 min-w-0 overflow-hidden h-72">
+      <span className="absolute right-3 top-1 font-serif text-7xl font-black text-white/10 select-none pointer-events-none leading-none">
         {player.rank}
       </span>
 
-      <Avatar className="w-14 h-14 rounded-full ring-2 ring-white/10">
+      <Avatar className="w-14 h-14 rounded-full">
         <AvatarImage
           src={player.avatar}
           alt={player.username}
           className="object-cover"
         />
-        <AvatarFallback className="rounded-full bg-zinc-800 text-zinc-400 text-sm font-bold">
+        <AvatarFallback className="rounded-full bg-neutral-800 text-neutral-400 text-sm font-bold">
           {player.username.slice(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
 
-      <div className="flex flex-col items-center gap-1 text-center min-w-0 w-full">
+      <div className="flex flex-col items-center gap-1 text-center min-w-0 w-full h-12">
         <div className="flex items-center justify-center gap-1.5 flex-wrap">
-          <PlayerTitle title={player.title} />
           <a
             href={player.url}
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-bold text-zinc-100 hover:text-amber-400 transition-colors truncate max-w-full"
+            className="text-md font-bold hover:underline underline-offset-2"
           >
             {player.username}
           </a>
         </div>
         {player.name && (
-          <span className="text-[11px] text-zinc-600 truncate w-full">
+          <span className="text-sm text-neutral-400 truncate w-full">
             {player.name}
           </span>
         )}
       </div>
 
       <div className="flex flex-col items-center">
-        <span
-          className={`font-mono text-2xl font-black tabular-nums ${ratingColor}`}
-        >
+        <span className="font-mono text-2xl font-black tabular-nums">
           {player.score.toLocaleString()}
         </span>
-        <span className="text-[10px] text-zinc-600 uppercase tracking-widest mt-0.5">
+        <span className="text-sm text-neutral-400 uppercase tracking-widest mt-0.5">
           Rating
         </span>
       </div>
@@ -164,56 +99,29 @@ const LeaderBoardPage = async ({
   const podium = allPlayers.slice(0, 3);
   const rest = allPlayers.slice(3);
 
-  const activeTabMeta = TABS.find((t) => t.id === activeTab)!;
-
   return (
-    <div className="min-h-screen text-zinc-100 selection:bg-amber-400/20">
+    <div className="min-h-svh text-neutral-100 bg-neutral-6">
       <header className="sticky top-0 z-20 border-b border-white/5 backdrop-blur-md">
         <div className="max-w-5xl mx-auto px-5 md:px-10 h-14 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 shrink-0 w-55">
-            <span className="text-lg">{activeTabMeta.sup}</span>
-            <div>
-              <h1 className="font-serif text-base font-black text-zinc-100 leading-none tracking-tight w-50">
-                {activeTabMeta.label} Leaderboard
-              </h1>
-              <p className="text-[10px] text-zinc-600 tracking-widest uppercase mt-0.5">
-                Top 50 · Chess.com
-              </p>
-            </div>
-          </div>
+          <h3 className=" text-neutral-200 font-semibold tracking-widest uppercase mt-0.5">
+            Top 50 · Chess.com
+          </h3>
 
-          <nav className="flex items-center gap-0.5 bg-zinc-900 border border-white/5 p-1 rounded-xl overflow-x-auto">
-            {TABS.map((tab) => {
-              const isActive = activeTab === tab.id;
-              return (
-                <Link
-                  key={tab.id}
-                  href={`/leaderboard?tab=${tab.id}`}
-                  className={`flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 ${
-                    isActive
-                      ? "bg-amber-500 shadow-lg shadow-amber-500/25"
-                      : "hover:text-zinc-200"
-                  }`}
-                >
-                  <span className="text-sm">{tab.sup}</span>
-                  {tab.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 shrink-0">
+          <div className="flex items-center gap-1.5 text-sm text-neutral-300 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             Live
           </div>
         </div>
       </header>
+      <nav className="max-w-3xl mx-auto mt-5">
+        <LeaderboardNav active={activeTab} />
+      </nav>
 
-      <main className="max-w-5xl mx-auto px-5 md:px-10 py-10 space-y-10">
+      <main className="max-w-5xl mx-auto px-5 md:px-10 space-y-10">
         <section className="space-y-4">
           <div className="flex items-center gap-3">
             <div className="h-px flex-1 bg-linear-to-r from-transparent to-white/5" />
-            <span className="text-[11px] text-zinc-600 font-mono uppercase tracking-widest">
+            <span className="text-sm text-neutral-600 font-mono uppercase tracking-widest">
               Top Performers
             </span>
             <div className="h-px flex-1 bg-linear-to-l from-transparent to-white/5" />
@@ -229,27 +137,36 @@ const LeaderBoardPage = async ({
         <section className="space-y-4">
           <div className="flex items-center gap-3">
             <div className="h-px flex-1 bg-linear-to-r from-transparent to-white/5" />
-            <span className="text-[11px] text-zinc-600 font-mono uppercase tracking-widest">
+            <span className="text-sm text-neutral-600 font-mono uppercase tracking-widest">
               Rankings
             </span>
             <div className="h-px flex-1 bg-linear-to-l from-transparent to-white/5" />
           </div>
 
-          <div className="rounded-2xl border border-white/5 overflow-hidden bg-zinc-900/30">
+          <div className="rounded-sm border border-white/5 overflow-hidden bg-neutral-900/30">
             <Table>
               <TableHeader>
                 <TableRow className="border-white/5 hover:bg-transparent">
-                  <TableHead className="w-16 text-center text-[10px] text-zinc-600 uppercase tracking-widest font-bold py-3.5">
+                  <TableHead className="w-16 text-center text-sm text-neutral-600 uppercase tracking-widest font-bold py-3.5">
                     Rank
                   </TableHead>
-                  <TableHead className="text-[10px] text-zinc-600 uppercase tracking-widest font-bold py-3.5 w-60">
+                  <TableHead className="text-sm text-neutral-600 uppercase tracking-widest font-bold py-3.5 w-60">
                     Player
                   </TableHead>
-                  <TableHead className="text-right text-[10px] text-zinc-600 uppercase tracking-widest font-bold py-3.5 w-60">
+                  <TableHead className="text-right text-sm text-neutral-600 uppercase tracking-widest font-bold py-3.5 w-60">
                     Rating
                   </TableHead>
-                  <TableHead className="text-right text-[10px] text-zinc-600 uppercase tracking-widest font-bold py-3.5 hidden sm:table-cell w-50 ">
-                    W · D · L
+                  <TableHead className="text-right text-sm text-neutral-600 uppercase tracking-widest font-bold py-3.5 hidden sm:table-cell w-50 ">
+                    W
+                  </TableHead>
+                  <TableHead className="text-right text-sm text-neutral-600 uppercase tracking-widest font-bold py-3.5 hidden sm:table-cell w-50 ">
+                    D
+                  </TableHead>
+                  <TableHead className="text-right text-sm text-neutral-600 uppercase tracking-widest font-bold py-3.5 hidden sm:table-cell w-50 ">
+                    L
+                  </TableHead>
+                  <TableHead className="text-right text-sm text-neutral-600 uppercase tracking-widest font-bold py-3.5 hidden sm:table-cell w-50 ">
+                    Win Ratio
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -257,15 +174,19 @@ const LeaderBoardPage = async ({
               <TableBody>
                 {rest.map((player, index) => {
                   const isEven = index % 2 === 0;
+                  const total =
+                    player.win_count + player.draw_count + player.loss_count;
+
+                  const pct = Math.round((player.win_count / total) * 100);
                   return (
                     <TableRow
                       key={player.player_id}
                       className={`border-white/4 transition-colors group ${
                         isEven ? "bg-white/1" : ""
-                      } hover:bg-amber-400/5`}
+                      } hover:bg-neutral-5/50`}
                     >
                       <TableCell className="text-center py-3.5 w-16">
-                        <span className="font-mono text-sm tabular-nums text-zinc-500 font-medium">
+                        <span className="font-mono text-sm tabular-nums text-neutral-500 font-medium">
                           {player.rank}
                         </span>
                       </TableCell>
@@ -278,24 +199,23 @@ const LeaderBoardPage = async ({
                               alt={player.username}
                               className="object-cover"
                             />
-                            <AvatarFallback className="rounded-full bg-zinc-800 text-zinc-500 text-[11px] font-bold">
+                            <AvatarFallback className="rounded-full bg-neutral-800 text-neutral-500 text-sm font-bold">
                               {player.username.slice(0, 2).toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex flex-col min-w-0 gap-0.5">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <PlayerTitle title={player.title} />
                               <a
                                 href={player.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-sm font-semibold text-zinc-200 group-hover:text-amber-400 transition-colors truncate"
+                                className="text-sm font-semibold text-neutral-200 group-hover:underline underline-offset-2 transition-colors truncate"
                               >
                                 {player.username}
                               </a>
                             </div>
                             {player.name && (
-                              <span className="text-[11px] text-zinc-600 truncate">
+                              <span className="text-sm text-neutral-600 truncate">
                                 {player.name}
                               </span>
                             )}
@@ -304,17 +224,30 @@ const LeaderBoardPage = async ({
                       </TableCell>
 
                       <TableCell className="text-right py-3.5 w-60">
-                        <span className="font-mono text-base font-black tabular-nums text-zinc-200 group-hover:text-amber-400 transition-colors">
+                        <span className="font-mono text-base font-black tabular-nums text-neutral-200  transition-colors">
                           {player.score.toLocaleString()}
                         </span>
                       </TableCell>
 
                       <TableCell className="text-right py-3.5 hidden sm:table-cell w-60">
-                        <WinLossRecord
-                          wins={player.win_count}
-                          draws={player.draw_count}
-                          losses={player.loss_count}
-                        />
+                        <span className="text-emerald-400 font-semibold">
+                          {player.win_count}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right py-3.5 hidden sm:table-cell w-60">
+                        <span className="text-neutral-400">
+                          {player.draw_count}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right py-3.5 hidden sm:table-cell w-60">
+                        <span className="text-rose-400 font-semibold">
+                          {player.loss_count}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right py-3.5 hidden sm:table-cell w-60">
+                        <span className="text-sm text-neutral-300 font-mono">
+                          {pct}%
+                        </span>
                       </TableCell>
                     </TableRow>
                   );
@@ -324,7 +257,7 @@ const LeaderBoardPage = async ({
           </div>
         </section>
 
-        <footer className="text-center text-[11px] text-zinc-700 font-mono pb-6 tracking-wide">
+        <footer className="text-center text-lg text-neutral-500 font-mono pb-6 tracking-wide">
           Refreshes every hour &nbsp;·&nbsp; Source: Chess.com Public API
         </footer>
       </main>

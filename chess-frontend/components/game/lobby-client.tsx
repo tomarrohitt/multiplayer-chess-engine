@@ -1,37 +1,31 @@
-import { Zap, Flame, Clock, Timer } from "lucide-react";
 import JoinButton from "./join-button";
 
 const TIME_CONTROLS = [
   {
-    icon: Zap,
-
     options: [
-      { label: "1 + 0", category: "Bullet", value: "1+0" },
-      { label: "2 + 1", category: "Bullet", value: "2+1" },
-      { label: "3 + 0", category: "Bullet", value: "3+0" },
+      { label: "1 + 0", value: "1+0" },
+      { label: "2 + 1", value: "2+1" },
+      { label: "3 + 0", value: "3+0" },
     ],
   },
   {
-    icon: Flame,
     options: [
-      { label: "3 + 2", category: "Blitz", value: "3+2" },
-      { label: "5 + 0", category: "Blitz", value: "5+0" },
-      { label: "5 + 3", category: "Blitz", value: "5+3" },
+      { label: "3 + 2", value: "3+2" },
+      { label: "5 + 0", value: "5+0" },
+      { label: "5 + 3", value: "5+3" },
     ],
   },
   {
-    icon: Clock,
     options: [
-      { label: "10 + 0", category: "Rapid", value: "10+0" },
-      { label: "10 + 5", category: "Rapid", value: "10+5" },
-      { label: "15 + 10", category: "Rapid", value: "15+10" },
+      { label: "10 + 0", value: "10+0" },
+      { label: "10 + 5", value: "10+5" },
+      { label: "15 + 10", value: "15+10" },
     ],
   },
   {
-    icon: Timer,
     options: [
-      { label: "30 + 0", category: "Classical", value: "30+0" },
-      { label: "30 + 20", category: "Classical", value: "30+20" },
+      { label: "30 + 0", value: "30+0" },
+      { label: "30 + 20", value: "30+20" },
     ],
   },
 ];
@@ -48,11 +42,11 @@ export function LobbyClient() {
       </p>
 
       <ul className="grid grid-cols-3 gap-3 mt-6">
-        {TIME_CONTROLS.map(({ options, icon }) =>
-          options.map(({ category, label, value }) => {
+        {TIME_CONTROLS.map(({ options }) =>
+          options.map(({ label, value }) => {
             return (
               <li key={value}>
-                <JoinButton value={value} label={label} category={category} />
+                <JoinButton value={value} label={label} />
               </li>
             );
           }),

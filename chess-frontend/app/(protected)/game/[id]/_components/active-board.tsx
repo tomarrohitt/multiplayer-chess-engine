@@ -62,8 +62,8 @@ export const ActiveBoard = memo(function ActiveBoard({
   if (!currentUserId) return;
 
   return (
-    <div style={{ width: 500, height: 500 }} className="relative">
-      <Chessground width={500} height={500} {...cgConfig} />
+    <div style={{ width: 560, height: 560 }} className="relative mt-1">
+      <Chessground width={560} height={560} {...cgConfig} />
 
       {premoveQueue
         .flatMap((move, i) => [

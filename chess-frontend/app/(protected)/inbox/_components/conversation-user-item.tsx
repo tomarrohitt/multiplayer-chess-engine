@@ -38,14 +38,14 @@ export const ConversationUserItem = ({ f }: ConversationUserItemProps) => {
               {f.lastMessage}
             </span>
           ) : (
-            <span className="text-[10px] text-zinc-500 truncate font-mono">
+            <span className="text-2xs text-zinc-500 truncate font-mono">
               @{f.username}
             </span>
           )}
           <div className="flex items-center gap-2">
             {f.timestamp && (
               <span
-                className={`text-[10px] shrink-0 font-mono ${isUnread ? "text-blue-400 font-bold" : "text-zinc-500"}`}
+                className={`text-2xs shrink-0 font-mono ${isUnread ? "text-blue-400 font-bold" : "text-zinc-500"}`}
               >
                 {formatTime(f.timestamp)}
               </span>

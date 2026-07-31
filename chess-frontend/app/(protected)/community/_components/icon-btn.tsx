@@ -53,7 +53,7 @@ export function IconBtn({
   return (
     <button
       title={label}
-      className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-150 hover:brightness-125 disabled:opacity-50 disabled:pointer-events-none cursor-pointer ${className}`}
+      className={`w-10 h-10 rounded-sm flex items-center justify-center transition-all duration-150 hover:brightness-125 disabled:opacity-50 disabled:pointer-events-none cursor-pointer ${className}`}
       style={{
         background: colors.bg,
         color: colors.color,

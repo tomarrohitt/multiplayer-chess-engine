@@ -17,7 +17,7 @@ export const LogoutButton = () => {
     <button
       onClick={handleLogout}
       disabled={pending}
-      className="flex items-center gap-2.5 w-full p-2 rounded-lg text-sm text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors cursor-pointer"
+      className="flex items-center gap-2.5 w-full p-2 rounded-sm text-sm text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors cursor-pointer"
     >
       {pending ? (
         <Loader className="h-4 w-4 shrink-0 animate-spin" />

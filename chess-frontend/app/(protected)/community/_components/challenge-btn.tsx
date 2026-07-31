@@ -37,15 +37,14 @@ export function ChallengeButton({ targetId }: { targetId: string }) {
         <div
           className="
       absolute right-0 top-full mt-2 w-40
-      bg-zinc-900/95 backdrop-blur-md
-      border border-zinc-800
-      rounded-2xl shadow-2xl
+      bg-neutral-5
+      rounded-sm 
       overflow-hidden z-50
       animate-in fade-in zoom-in-95 duration-100
     "
         >
           <div className="p-2">
-            <span className="block text-[10px] font-semibold text-zinc-500 px-2 pb-2 uppercase tracking-wider">
+            <span className="block text-sm font-semibold text-neutral-500 px-2 pb-2 uppercase tracking-wider">
               Time Control
             </span>
 
@@ -56,11 +55,11 @@ export function ChallengeButton({ targetId }: { targetId: string }) {
                   className="
               group flex items-center justify-between
               text-sm px-3 py-2
-              text-zinc-300
-              rounded-xl
+              text-neutral-300
+              rounded-sm
               transition-all duration-150
 
-              hover:bg-zinc-800 hover:text-white
+              hover:bg-neutral-800 hover:text-white
               active:scale-[0.97] cursor-pointer
             "
                   onClick={(e) => {
@@ -71,7 +70,7 @@ export function ChallengeButton({ targetId }: { targetId: string }) {
                 >
                   <span>{tc}</span>
 
-                  <span className="opacity-0 group-hover:opacity-100 text-xs text-zinc-500">
+                  <span className="opacity-0 group-hover:opacity-100 text-xs text-neutral-500">
                     →
                   </span>
                 </button>

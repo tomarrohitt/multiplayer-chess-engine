@@ -18,20 +18,20 @@ export function IncomingDrawOffer({
   if (!isPlayer || !drawOffer) return null;
 
   return (
-    <div className="mx-3 mb-2 p-3 bg-zinc-900/80 border border-zinc-700/60 rounded-lg mt-6">
-      <p className="font-mono text-xs text-zinc-400 text-center mb-3">
+    <div className="mx-3 mb-2 p-3 bg-neutral-5  rounded-sm absolute w-90 bottom-60">
+      <p className="font-mono text-xs text-neutral-200 text-center mb-3">
         Opponent offered a draw
       </p>
       <div className="flex gap-2">
         <button
           onClick={() => acceptDraw(gameId)}
-          className="flex-1 py-1.5 bg-emerald-950/60 border border-emerald-800/60 text-emerald-400 font-mono text-[11px] font-medium rounded-md hover:bg-emerald-950 transition-colors"
+          className="flex-1 py-1.5 bg-green-5/50 hover:bg-green-5/60  text-green font-mono text-xs font-medium rounded-xs transition-colors"
         >
           Accept
         </button>
         <button
           onClick={() => declineDraw(gameId)}
-          className="flex-1 py-1.5 bg-zinc-900 border border-zinc-700/40 text-zinc-500 font-mono text-[11px] font-medium rounded-md hover:bg-zinc-800 transition-colors"
+          className="flex-1 py-1.5 bg-neutral-6 text-neutral-300 font-mono text-xs font-medium rounded-xs hover:bg-neutral-6/50 transition-colors"
         >
           Decline
         </button>

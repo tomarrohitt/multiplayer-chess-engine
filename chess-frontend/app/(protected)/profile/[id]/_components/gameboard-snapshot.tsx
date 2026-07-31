@@ -31,12 +31,12 @@ export const GameboardSnapshot = ({
   return (
     <div
       style={{
-        width: 164,
-        height: 164,
+        width: 190,
+        height: 190,
         overflow: "hidden",
       }}
     >
-      <Chessground width={164} height={164} {...config} />
+      <Chessground width={190} height={190} {...config} />
     </div>
   );
 };

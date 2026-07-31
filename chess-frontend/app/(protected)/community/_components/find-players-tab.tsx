@@ -21,7 +21,7 @@ export function FindPlayersTab({ query }: { query: string }) {
     <div className="flex flex-col gap-4">
       <SearchUsersForm query={query} placeholder="Type the name or username" />
       {!query ? (
-        <div className="text-center py-10 text-zinc-500">
+        <div className="text-center py-10 text-zinc-500 text-lg">
           Type a name or username to search all players.
         </div>
       ) : (

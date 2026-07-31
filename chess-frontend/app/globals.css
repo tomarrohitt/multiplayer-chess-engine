@@ -97,14 +97,14 @@ body {
   --background: oklch(0.09 0.006 75);
   --fg: oklch(0.96 0.004 75);
 
-  --green-0: oklch(18.5% 0.113 140.7);
-  --green-1: oklch(26.5% 0.113 140.7);
-  --green-2: oklch(38.5% 0.113 140.7);
-  --green-3: oklch(44.5% 0.113 140.7);
-  --green-4: oklch(58.5% 0.113 140.7);
-  --green-5: oklch(69.4% 0.113 140.7);
-  --green-6: oklch(82.5% 0.113 140.7);
-  --green-7: oklch(95.5% 0.113 140.7);
+  --green-0: oklch(0.8003 0.4821 151.71);
+  --green-1: oklch(0.8003 0.4221 151.71);
+  --green-2: oklch(0.8003 0.3621 151.71);
+  --green-3: oklch(0.8003 0.3021 151.71);
+  --green-4: oklch(0.8003 0.2421 151.71);
+  --green-5: oklch(0.8003 0.1821 151.71);
+  --green-6: oklch(0.8003 0.1221 151.71);
+  --green-7: oklch(0.8003 0.0721 151.71);
 
   --neutral-0: oklch(1 0 0);
   --neutral-1: oklch(0.87 0 0);

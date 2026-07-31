@@ -28,7 +28,7 @@ export const GameSidebar = memo(function GameSidebar({
   const { currentMoveIndex, handleMoveClick } = useGameNavigation(latestIndex);
 
   return (
-    <div className="flex flex-col justify-center items-center relative">
+    <div className="max-h-svh flex flex-col justify-center items-center">
       <div className="flex-1 flex flex-col overflow-hidden p-4">
         <MoveList
           pgn={activeGame.pgn}
@@ -39,7 +39,7 @@ export const GameSidebar = memo(function GameSidebar({
         />
       </div>
 
-      <div className="flex flex-col gap-1.5 p-3 border-t border-zinc-800/40 w-full">
+      <div className="flex flex-col gap-1.5 p-3 border-t border-neutral-4 w-full">
         {isPlayer && !gameOver && (
           <ActiveGameControls gameId={activeGame.gameId} isPlayer={isPlayer} />
         )}

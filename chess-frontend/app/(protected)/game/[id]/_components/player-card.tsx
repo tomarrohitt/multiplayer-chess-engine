@@ -29,10 +29,10 @@ export function PlayerCard({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 px-3 py-2 rounded-lg border transition-all duration-200 w-125",
+        "flex items-center gap-3 px-3 py-2 rounded-sm border transition-all duration-200 w-full",
         isWhite
-          ? "bg-zinc-600/80 border-zinc-800/60"
-          : "bg-zinc-800/60 border-zinc-800/40",
+          ? "bg-neutral-600/80 border-neutral-800/60"
+          : "bg-neutral-800/60 border-neutral-800/40",
       )}
     >
       {player.image ? (
@@ -47,7 +47,9 @@ export function PlayerCard({
         <div
           className={cn(
             "w-10 h-10 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 font-mono",
-            isWhite ? "bg-zinc-800 text-zinc-400" : "bg-zinc-800 text-zinc-400",
+            isWhite
+              ? "bg-neutral-800 text-neutral-400"
+              : "bg-neutral-800 text-neutral-400",
           )}
         >
           {getInitials(player.username)}
@@ -60,16 +62,16 @@ export function PlayerCard({
           href={`/profile/${player.id}`}
           className="flex items-center gap-2"
         >
-          <span className="font-mono text-sm font-medium text-zinc-300 truncate">
+          <span className="font-mono text-sm font-medium text-neutral-300 truncate">
             {player.username}
           </span>
           {player.rating !== undefined && (
-            <span className="font-mono text-xs text-zinc-300 shrink-0">
+            <span className="font-mono text-xs text-neutral-300 shrink-0">
               ({player.rating})
             </span>
           )}
           {isActive && (
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500/80 animate-pulse shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-green-5 animate-pulse shrink-0" />
           )}
         </Link>
         {position === "top" && pieces}

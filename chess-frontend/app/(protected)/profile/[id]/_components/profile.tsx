@@ -11,7 +11,7 @@ export function ProfileHeader({ rating }: { rating: number }) {
           ChessBoard
         </span>
       </div>
-      <div className="flex items-center gap-1.5 bg-[#4ade80]/[0.07] border border-[#4ade80]/18 rounded-[20px] px-3.5 py-1.5">
+      <div className="flex items-center gap-1.5 bg-[#4ade80]/[0.07] border border-[#4ade80]/18 rounded-sm px-3.5 py-1.5">
         <Activity size={13} color="#4ade80" />
         <span className="text-[12px] font-semibold text-[#4ade80] font-mono">
           Rating {rating}

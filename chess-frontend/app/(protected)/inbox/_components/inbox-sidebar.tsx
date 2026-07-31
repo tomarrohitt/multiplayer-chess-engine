@@ -9,7 +9,7 @@ interface InboxSidebarProps {
 export function InboxSidebar({ content, children }: InboxSidebarProps) {
   return (
     <div
-      className="w-80 flex flex-col rounded-2xl overflow-hidden shrink-0 h-[calc(100vh-90px)]"
+      className="w-80 flex flex-col rounded-sm overflow-hidden shrink-0"
       style={{
         background: "rgba(255,255,255,0.03)",
         border: "1px solid rgba(255,255,255,0.06)",

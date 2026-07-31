@@ -27,7 +27,7 @@ export const OfferChallengeBtn = ({ id }: { id: string }) => {
         onClick={() => setOpen((p) => !p)}
         suppressHydrationWarning={true}
         className="
-          flex items-center gap-3 p-3 rounded-xl
+          flex items-center gap-3 p-3 rounded-sm
           hover:bg-white/5 active:scale-[0.98]
           transition-all
           text-zinc-300 text-sm font-medium w-full text-left
@@ -47,7 +47,7 @@ export const OfferChallengeBtn = ({ id }: { id: string }) => {
             absolute left-0 mt-2 w-full
             bg-zinc-900/95 backdrop-blur-md
             border border-zinc-800
-            rounded-2xl shadow-2xl
+            rounded-sm shadow-2xl
             overflow-hidden z-50
             animate-in fade-in zoom-in-95 duration-100
           "
@@ -64,7 +64,7 @@ export const OfferChallengeBtn = ({ id }: { id: string }) => {
                   className="
                     flex items-center justify-between
                     px-3 py-2 text-sm
-                    text-zinc-300 rounded-xl
+                    text-zinc-300 rounded-sm
                     hover:bg-zinc-800 hover:text-white
                     active:scale-[0.97]
                     transition-all cursor-pointer

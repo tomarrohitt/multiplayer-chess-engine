@@ -10,8 +10,8 @@ export const PlayerProfile = ({
 }) => {
   if (!image)
     return (
-      <div className="w-full h-full bg-[#181818] flex items-center justify-center">
-        <span className="text-[32px] font-bold text-[#4ade80] tracking-[0.05em]">
+      <div className="w-full h-full bg-neutral-6 flex items-center justify-center">
+        <span className="text-6xl font-bold text-green-5 tracking-wider">
           {getInitials(name)}
         </span>
       </div>

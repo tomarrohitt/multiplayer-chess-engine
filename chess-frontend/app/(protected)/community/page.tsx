@@ -33,15 +33,9 @@ export default async function CommunityPage({
   }
 
   return (
-    <div
-      className="min-h-screen w-full"
-      style={{
-        background: "#0d0d10",
-        fontFamily: "'DM Sans', sans-serif",
-      }}
-    >
+    <div className="min-h-svh w-full">
       <div className="fixed inset-0 pointer-events-none opacity-[0.025]" />
-      <div className="relative max-w-2xl mx-auto px-4 py-10">
+      <div className="relative max-w-3xl mx-auto px-4 py-10">
         <CommunityNav active={active} counts={counts}>
           {tabContent}
         </CommunityNav>

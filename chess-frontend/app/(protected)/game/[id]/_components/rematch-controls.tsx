@@ -24,7 +24,7 @@ function RematchControlsComponent({
 
   if (rematchOfferSent === DrawOffer.SENT) {
     return (
-      <div className="flex-1 py-2 font-mono text-[11px] text-zinc-600 bg-zinc-900/40 border border-zinc-800/30 rounded-lg text-center">
+      <div className="flex-1 py-2 font-mono text-sm text-neutral-600 bg-neutral-900/40 border-neutral-800/30 rounded-xs text-center">
         Rematch sent...
       </div>
     );
@@ -32,7 +32,7 @@ function RematchControlsComponent({
 
   if (rematchOfferSent === DrawOffer.DECLINE) {
     return (
-      <div className="flex-1 py-2 font-mono text-[11px] text-rose-500/70 bg-rose-950/20 border border-rose-900/30 rounded-lg text-center">
+      <div className="flex-1 py-2 font-mono text-sm text-sky-400/80 bg-sky-950/20 border-sky-900/30 rounded-xs hover:bg-sky-950/40 hover:text-sky-300 transition-all text-center">
         Rematch declined
       </div>
     );
@@ -42,7 +42,7 @@ function RematchControlsComponent({
     return (
       <button
         onClick={() => offerRematch(gameId, timeControl)}
-        className="flex-1 py-2 font-mono text-[11px] text-sky-400/80 bg-sky-950/20 border border-sky-900/30 rounded-lg hover:bg-sky-950/40 hover:text-sky-300 transition-all"
+        className="flex-1 py-2 font-mono text-sm bg-neutral-5 hover:bg-neutral-5/60 text-white transition-all"
       >
         Rematch
       </button>

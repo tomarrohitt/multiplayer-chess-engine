@@ -6,7 +6,6 @@ import { GameboardSnapshot } from "@/app/(protected)/profile/[id]/_components/ga
 import {
   avgMoveTime,
   formatDate,
-  formatStatus,
   getMaterialAdvantage,
   PIECE_GLYPHS,
 } from "@/lib/chess-utils";
@@ -20,10 +19,10 @@ export async function RecentGames({ id }: { id: string }) {
 
   if (!games || !user) {
     return (
-      <div className="bg-[#141414] border border-[#242424] rounded-[14px] py-5.5 px-6 mt-4">
+      <div className="bg-[#141414] border border-[#242424] rounded-sm py-5.5 px-6 mt-4">
         <div className="flex items-center gap-2 mb-4">
-          <Swords size={15} color="#4ade80" />
-          <span className="text-[14px] font-semibold text-[#e5e5e5]">
+          <Swords size={24} color="#4ade80" />
+          <span className="text-md font-semibold text-[#e5e5e5]">
             Recent Games
           </span>
         </div>
@@ -35,12 +34,10 @@ export async function RecentGames({ id }: { id: string }) {
   }
 
   return (
-    <div className="bg-[#141414] border border-[#242424] rounded-[14px] backdrop-blur-sm py-5.5 px-6 mt-4">
-      <div className="flex items-center gap-2 mb-4">
-        <Swords size={15} color="#4ade80" />
-        <span className="text-[14px] font-semibold text-[#e5e5e5]">
-          Recent Games
-        </span>
+    <div className="bg-neutral-5 border border-[#242424] rounded-sm backdrop-blur-sm py-5.5 px-6 mt-4">
+      <div className="flex items-center gap-4 mb-4">
+        <Swords size={36} className="text-green-5" />
+        <span className="text-3xl font-semibold text-neutral-100">History</span>
       </div>
 
       <div className="flex flex-col gap-3 overflow-y-auto pr-2">
@@ -92,10 +89,10 @@ export async function RecentGames({ id }: { id: string }) {
             <Link
               key={game.id}
               href={`/game/${game.id}`}
-              className="group flex items-stretch bg-[#0c0c0c] border border-[#242424] rounded-lg overflow-hidden hover:border-[#3d3d3d] transition-all duration-100 shrink-0"
+              className="group flex items-stretch bg-neutral-6 rounded-sm overflow-hidden shrink-0"
             >
               <div className="shrink-0 flex flex-col">
-                <div style={{ width: 164, height: 164 }}>
+                <div style={{ width: 190, height: 190 }}>
                   <GameboardSnapshot game={game} isWhite={isWhite} />
                   <MaterialBar diff={mat.diff} />
                 </div>
@@ -103,38 +100,33 @@ export async function RecentGames({ id }: { id: string }) {
 
               <div className="flex flex-col flex-1 min-w-0 px-4 py-3 gap-2">
                 <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <div className="font-mono text-[10px] text-[#737373] uppercase tracking-widest mb-0.5">
-                      vs
-                    </div>
-                    <div className="font-serif text-lg font-medium text-[#e5e5e5] group-hover:text-white transition-colors truncate">
-                      {opponent.username}
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="font-mono text-xs text-[#a3a3a3]">
-                        {opponent.matchRating}
-                      </span>
-                      {ratingGap !== 0 && (
-                        <span
-                          className={`font-mono text-[10px] font-semibold px-1.5 py-px rounded-sm ${
-                            ratingGap > 0
-                              ? "bg-[#d97706]/10 text-[#d97706]"
-                              : "bg-[#242424] text-[#737373]"
-                          }`}
-                        >
-                          {ratingGap > 0 ? `+${ratingGap}` : ratingGap} rated
-                        </span>
-                      )}
-                    </div>
+                  <div className="min-w-0 flex-center gap-2">
+                    <span className="font-serif text-xl">
+                      {opponent.username}{" "}
+                    </span>
+                    <span className="text-xs">({opponent.matchRating})</span>
                   </div>
                   <span
-                    className={`font-mono text-[10px] font-semibold tracking-wider px-2 py-1 rounded shrink-0 uppercase border ${badgeStyle}`}
+                    className={`font-mono text-xs font-semibold tracking-wider px-2 py-1 rounded shrink-0 uppercase border ${badgeStyle}`}
                   >
                     {badgeLabel}
                   </span>
                 </div>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  {ratingGap !== 0 && (
+                    <span
+                      className={`font-mono text-xs font-semibold px-1.5 py-px rounded-sm ${
+                        ratingGap > 0
+                          ? "bg-[#d97706]/10 text-[#d97706]"
+                          : "bg-[#242424] text-[#737373]"
+                      }`}
+                    >
+                      {ratingGap > 0 ? `+${ratingGap}` : ratingGap} rated
+                    </span>
+                  )}
+                </div>
 
-                <div className="flex bg-[#050505] rounded-md overflow-hidden border border-[#1a1a1a] mt-1">
+                <div className="flex bg-neutral-5 rounded-md my-1">
                   <StatPill label="Moves" value={String(moveCount)} />
                   <StatPill
                     label="Avg"
@@ -144,7 +136,7 @@ export async function RecentGames({ id }: { id: string }) {
                   <StatPill label="Change" value={diffLabel} />
                 </div>
 
-                <div className="flex items-center gap-2 min-h-4 mt-2">
+                <div className="flex items-center gap-2 min-h-4 mt-1">
                   {myMatDiff > 0 ? (
                     <>
                       <span className="font-mono text-xs text-[#d97706] uppercase tracking-wider font-semibold">
@@ -157,28 +149,24 @@ export async function RecentGames({ id }: { id: string }) {
                       −{Math.abs(myMatDiff)} material
                     </span>
                   ) : (
-                    <span className="font-mono text-xs text-[#737373] uppercase tracking-wider">
+                    <span className="font-mono text-xs text-neutral-300 uppercase tracking-wider">
                       Equal material
                     </span>
                   )}
                 </div>
 
-                {/* Row 4: meta footer */}
-                <div className="flex items-center justify-between mt-auto pt-1">
+                <div className="flex items-center justify-between pt-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs text-[#a3a3a3]">
+                    <span className="font-mono text-md text-neutral-200">
                       {game.timeControl}
                     </span>
-                    <span className="w-1 h-1 rounded-full bg-[#333333]" />
-                    <span className="font-mono text-xs text-[#a3a3a3]">
-                      {formatStatus(game.status)}
-                    </span>
-                    <span className="w-1 h-1 rounded-full bg-[#333333]" />
-                    <span className="font-mono text-xs text-[#a3a3a3]">
+
+                    <span className="w-1 h-1 rounded-full bg-neutral-200" />
+                    <span className="font-mono text-md text-neutral-200">
                       {formatDate(game.createdAt)}
                     </span>
                   </div>
-                  <span className="font-mono text-[10px] text-[#737373] uppercase tracking-wider font-semibold">
+                  <span className="font-mono text-xs text-[#737373] uppercase tracking-wider font-semibold">
                     {isWhite ? "White" : "Black"}
                   </span>
                 </div>
@@ -224,12 +212,12 @@ function MaterialBar({ diff }: { diff: number }) {
       />
       <div className="bg-[#333333] flex-1 h-full" />
       {diff > 0 && (
-        <span className="absolute left-1 top-0 text-[10px] font-bold leading-3 text-[#737373]">
+        <span className="absolute left-1 top-0 text-xs font-bold leading-3 text-[#737373]">
           +{diff}
         </span>
       )}
       {diff < 0 && (
-        <span className="absolute right-1 top-0 text-[10px] font-bold leading-3 text-[#737373]">
+        <span className="absolute right-1 top-0 text-xs font-bold leading-3 text-[#737373]">
           +{Math.abs(diff)}
         </span>
       )}
@@ -240,7 +228,7 @@ function MaterialBar({ diff }: { diff: number }) {
 function StatPill({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col items-center flex-1 py-1.5 border-r border-[#1a1a1a] last:border-r-0">
-      <span className="text-[10px] text-[#737373] uppercase tracking-widest mb-0.5">
+      <span className="text-xs text-[#737373] uppercase tracking-widest mb-0.5">
         {label}
       </span>
       <span className="text-xs font-medium text-[#a3a3a3]">{value}</span>

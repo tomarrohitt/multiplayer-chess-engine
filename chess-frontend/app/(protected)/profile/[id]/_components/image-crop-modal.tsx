@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Loader2 } from "lucide-react";
 
 interface ImageCropModalProps {
   open: boolean;
@@ -130,7 +131,7 @@ export function ImageCropModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="relative h-96 bg-zinc-900 rounded-lg overflow-hidden">
+        <div className="relative h-96 bg-zinc-900 rounded-sm overflow-hidden">
           <Cropper
             image={imageSrc}
             crop={crop}
@@ -159,10 +160,14 @@ export function ImageCropModal({
           <Button variant="secondary" onClick={onClose} disabled={isProcessing}>
             Cancel
           </Button>
-          <Button onClick={handleSaveAndUpload} disabled={isProcessing}>
+          <Button
+            onClick={handleSaveAndUpload}
+            disabled={isProcessing}
+            className="bg-green-5/50 hover:bg-green-5/40 w-30"
+          >
             {isProcessing ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                <Loader2 className="animate-spin" />
                 Processing...
               </>
             ) : (

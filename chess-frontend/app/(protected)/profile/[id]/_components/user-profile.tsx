@@ -57,7 +57,7 @@ export const UserProfile = ({
   return (
     <>
       <div className="relative w-fit">
-        <div className="w-25 h-25 rounded-full bg-[#0c0c0c] border-2 border-[#2a2a2a] flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+        <div className="w-40 h-40 rounded-full flex items-center justify-center overflow-hidden ">
           <PlayerProfile name={name} image={displayUrl} />
         </div>
 
@@ -66,12 +66,12 @@ export const UserProfile = ({
             document.getElementById("avatar-upload-input")?.click()
           }
           disabled={pending}
-          className="absolute bottom-0.5 right-0.5 w-7.5 h-7.5 rounded-full bg-[#4ade80] border-2 border-[#0c0c0c] flex items-center justify-center cursor-pointer hover:bg-[#38c868] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-green-5 border-2 border-neutral-6 flex items-center justify-center cursor-pointer hover:bg-green-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {pending ? (
-            <div className="w-3.5 h-3.5 border-2 border-[#111] border-t-transparent rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-neutral-7 border-t-transparent rounded-full animate-spin" />
           ) : (
-            <Camera size={16} color="#111" />
+            <Camera size={20} color="black" />
           )}
         </button>
 

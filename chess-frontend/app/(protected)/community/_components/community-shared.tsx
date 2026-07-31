@@ -4,6 +4,7 @@ import { GetFriend } from "@/types/friends";
 import { getWinRate } from "@/lib/chess-utils";
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function getAvatarHue(name: string) {
   return [...name].reduce((a, c) => a + c.charCodeAt(0), 0) % 360;
@@ -60,7 +61,7 @@ export function StatBar({
 }) {
   const t = wins + losses + draws || 1;
   return (
-    <div className="flex gap-0.5 h-1 w-full rounded-full overflow-hidden">
+    <div className="flex gap-0.5 h-1 w-19/20 rounded-full overflow-hidden">
       <div style={{ width: `${(wins / t) * 100}%`, background: "#22c55e" }} />
       <div style={{ width: `${(draws / t) * 100}%`, background: "#eab308" }} />
       <div style={{ width: `${(losses / t) * 100}%`, background: "#ef4444" }} />
@@ -77,10 +78,10 @@ export function FriendCard({
 }) {
   return (
     <div
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl group transition-all duration-150"
+      className="flex items-center gap-4 p-3 rounded-xs group transition-all duration-150"
       style={{
         background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.06)",
+        border: "1px solid rgba(255,255,255,0.03)",
       }}
     >
       <Avatar
@@ -95,35 +96,26 @@ export function FriendCard({
         <div className="flex items-baseline gap-2">
           <Link href={`/profile/${player.id}`} className="underline">
             <span
-              className="text-sm font-semibold text-white truncate"
+              className="text-md font-semibold text-white truncate"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               {player.name}
             </span>
           </Link>
           <span
-            className="text-[11px] text-zinc-500 truncate"
+            className="text-sm text-neutral-500 truncate"
             style={{ fontFamily: "'Fira Code', monospace" }}
           >
             @{player.username}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1">
-            <Trophy size={10} className="text-amber-400" />
-            <span
-              className="text-xs font-bold text-amber-400"
-              style={{ fontFamily: "'Fira Code', monospace" }}
-            >
-              {player.rating}
-            </span>
-          </div>
-          <span className="text-zinc-700 text-xs">·</span>
+        <div className="flex items-center gap-1">
+          <Trophy size={10} className="text-amber-400" />
           <span
-            className="text-[11px] text-zinc-500"
+            className="text-xs font-bold text-amber-400"
             style={{ fontFamily: "'Fira Code', monospace" }}
           >
-            {getWinRate(player.wins, player.losses, player.draws)}% WR
+            {player.rating}
           </span>
         </div>
         <StatBar
@@ -133,7 +125,7 @@ export function FriendCard({
         />
       </div>
 
-      <div className="flex items-center gap-1.5 shrink-0">{actions}</div>
+      <div className="flex items-center gap-3 shrink-0">{actions}</div>
     </div>
   );
 }
@@ -150,18 +142,18 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center gap-3 py-16">
       <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center"
+        className="w-16 h-16 rounded-xs flex items-center justify-center"
         style={{ background: "rgba(255,255,255,0.04)" }}
       >
-        <Icon size={24} className="text-zinc-600" />
+        <Icon size={24} className="text-neutral-600" />
       </div>
       <p
-        className="text-sm font-semibold text-zinc-400"
+        className="text-xl font-semibold text-neutral-400"
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
         {title}
       </p>
-      <p className="text-xs text-zinc-600 text-center max-w-55">{sub}</p>
+      <p className="text-[14px] text-neutral-600 text-center max-w-55">{sub}</p>
     </div>
   );
 }
@@ -172,22 +164,17 @@ export function PlayerListSkeleton() {
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl animate-pulse"
+          className="flex items-center gap-3 px-4 py-3 rounded-xs animate-pulse"
           style={{
             background: "rgba(255,255,255,0.03)",
             border: "1px solid rgba(255,255,255,0.06)",
             opacity: 1 - 0.19 * i,
           }}
         >
-          <div className="w-11 h-11 rounded-full bg-zinc-800/60 shrink-0" />
+          <div className="w-11 h-11 rounded-full bg-neutral-800/60 shrink-0" />
           <div className="flex-1 min-w-0 flex flex-col gap-2.5">
-            <div className="h-3.5 bg-zinc-800/80 rounded w-24" />
-            <div className="h-2.5 bg-zinc-800/50 rounded w-16" />
-          </div>
-          <div className="flex items-center gap-1.5 shrink-0">
-            <div className="w-8 h-8 rounded-xl bg-zinc-800/60" />
-            <div className="w-8 h-8 rounded-xl bg-zinc-800/60" />
-            <div className="w-8 h-8 rounded-xl bg-zinc-800/60" />
+            <div className="h-3.5 bg-neutral-800/80 rounded w-24" />
+            <div className="h-2.5 bg-neutral-800/50 rounded w-16" />
           </div>
         </div>
       ))}

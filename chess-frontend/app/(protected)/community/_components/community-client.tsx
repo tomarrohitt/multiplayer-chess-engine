@@ -79,7 +79,7 @@ export function CommunityNav({
         </p>
       </div>
       <div
-        className="flex gap-1 p-1 rounded-2xl mb-6"
+        className="flex gap-1 p-1 rounded-xs mb-6"
         style={{
           background: "rgba(255,255,255,0.04)",
           border: "1px solid rgba(255,255,255,0.07)",
@@ -95,7 +95,7 @@ export function CommunityNav({
               key={id}
               onClick={() => handleTabChange(id)}
               className={cn(
-                "relative rounded-full px-3 py-1.5 text-sm font-semibold text-white outline-sky-400 transition focus-visible:outline-2 flex-1 flex items-center justify-center gap-1.5 h-9 cursor-pointer",
+                "relative rounded-xs px-3 py-1.5 text-sm font-semibold text-white outline-sky-400 transition focus-visible:outline-2 flex-1 flex items-center justify-center gap-1.5 h-9 cursor-pointer",
                 isActive ? "" : "hover:text-white/60",
               )}
               style={{
@@ -105,16 +105,12 @@ export function CommunityNav({
               {isActive && (
                 <motion.span
                   layoutId="bubble"
-                  className="absolute inset-0 z-10 bg-white mix-blend-difference"
+                  className="absolute inset-0 z-10 bg-white mix-blend-difference rounded-md"
                   style={{
-                    borderRadius: 9999,
                     background: isActive
                       ? "rgba(255,255,255,0.1)"
                       : "transparent",
                     fontFamily: "'DM Sans', sans-serif",
-                    border: isActive
-                      ? "1px solid rgba(255,255,255,0.12)"
-                      : "1px solid transparent",
                   }}
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
@@ -141,7 +137,7 @@ export function CommunityNav({
         <div className="flex flex-col gap-4">
           {["friends", "find"].includes(optimisticActive) && (
             <div
-              className="w-full h-10 rounded-xl animate-pulse"
+              className="w-full h-10 rounded-xs animate-pulse"
               style={{
                 background: "rgba(255,255,255,0.05)",
                 border: "1px solid rgba(255,255,255,0.08)",

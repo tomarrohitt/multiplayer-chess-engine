@@ -3,6 +3,8 @@ import { useGameStore } from "@/store/use-game-store";
 import { useSocket } from "@/store/socket-provider";
 import { Loader2 } from "lucide-react";
 import { QueueStatus } from "@/types/chess";
+import Image from "next/image";
+import Stamp from "@/public/assets/lottie/Stamp.svg";
 
 export function SearchingModal() {
   const queueStatus = useGameStore((s) => s.queueStatus);
@@ -12,31 +14,31 @@ export function SearchingModal() {
   if (queueStatus !== QueueStatus.WAITING) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
-      <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-8 flex flex-col items-center gap-5 shadow-2xl w-72">
-        <div className="relative">
-          <div className="w-16 h-16 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-4xl select-none">
-            ♟
-          </div>
-          <span className="absolute inset-0 rounded-full border-2 border-green-500/40 animate-ping" />
-        </div>
-
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center">
+      <div className="bg-neutral-5 border  rounded-sm p-4 flex flex-col items-center gap-5 shadow-2xl w-108 h-90">
+        <Image
+          src={Stamp}
+          width={200}
+          height={200}
+          alt="Stamp"
+          className="absolute"
+        />
+        <div className="h-42" />
         <div className="text-center">
-          <h2 className="text-lg font-bold mb-1">Finding Opponent</h2>
-          <p className="text-zinc-400 text-sm">
+          <p className="text-neutral-400 text-xl">
             Searching for a {queueTimeControl ? `${queueTimeControl} ` : ""}
             match...
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-zinc-500 text-xs">
+        <div className="flex items-center gap-2 text-neutral-500 text-md">
           <Loader2 className="w-3.5 h-3.5 animate-spin" />
           <span>In queue</span>
         </div>
 
         <button
           onClick={() => leaveQueue()}
-          className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors underline"
+          className="bg-red-500/60 hover:bg-red-500/50 text-white font-semibold px-4 py-1 rounded-xs"
         >
           Cancel
         </button>

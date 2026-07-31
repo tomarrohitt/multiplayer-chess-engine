@@ -8,7 +8,7 @@ export function OpponentInfo({
   return (
     <p className="text-sm font-medium text-neutral-200 group-hover:text-neutral-100 transition-colors truncate">
       {username}
-      <span className="font-mono text-2xs text-neutral-500 group-hover:text-neutral-400 ml-1.5">
+      <span className="font-mono text-xs text-neutral-500 group-hover:text-neutral-400 ml-1.5">
         ({rating})
       </span>
     </p>
