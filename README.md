@@ -1,5 +1,7 @@
 # Real-Time Multiplayer Chess
 
+![Screenshot of the Real-Time Multiplayer Chess site](./chess-frontend/public/assets/Screenshot_20260808_141320.png)
+
 A real-time multiplayer chess platform built with **Next.js, Node.js, WebSockets, Redis, PostgreSQL, and BullMQ**.
 
 The most difficult part of building a multiplayer chess application wasn't implementing chess rules. It was ensuring that players, spectators, clocks, and backend services remained perfectly synchronized despite network latency, reconnections, and distributed state.
